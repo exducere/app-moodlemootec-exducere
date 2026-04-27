@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>Política de Privacidad — Abic</title>
+    <meta name="description" content="Política de Privacidad de la aplicación Abic. Información sobre recolección, uso, almacenamiento y derechos sobre los datos personales.">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --color-bg: #ffffff;
+            --color-text: #1a1a1a;
+            --color-muted: #555555;
+            --color-accent: #0a4d8c;
+            --color-border: #e2e2e2;
+            --color-code-bg: #f4f6f8;
+            --max-width: 780px;
+            --radius: 6px;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.65;
+            color: var(--color-text);
+            background-color: var(--color-bg);
+            padding: 2rem 1.25rem;
+        }
+
+        main {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        header {
+            border-bottom: 2px solid var(--color-accent);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+            font-weight: 600;
+            color: var(--color-accent);
+            margin: 2.5rem 0 1rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem;
+            color: var(--color-text);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--color-text);
+        }
+
+        .meta {
+            color: var(--color-muted);
+            font-size: 0.95rem;
+        }
+
+        .meta strong {
+            color: var(--color-text);
+        }
+
+        ul, ol {
+            margin: 0 0 1.25rem 1.5rem;
+            color: var(--color-text);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        ul ul, ol ol, ul ol, ol ul {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+            background-color: var(--color-code-bg);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            text-align: left;
+            padding: 0.75rem 0.85rem;
+            border: 1px solid var(--color-border);
+            vertical-align: top;
+        }
+
+        .data-table th {
+            background-color: var(--color-code-bg);
+            font-weight: 600;
+        }
+
+        .callout {
+            background-color: var(--color-code-bg);
+            border-left: 4px solid var(--color-accent);
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius);
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .callout p:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+            color: var(--color-muted);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 1.25rem 1rem; }
+            .data-table { font-size: 0.88rem; }
+            .data-table th, .data-table td { padding: 0.5rem 0.6rem; }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0d1117;
+                --color-text: #e6edf3;
+                --color-muted: #9aa4ad;
+                --color-accent: #4a9eff;
+                --color-border: #30363d;
+                --color-code-bg: #161b22;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Política de Privacidad</h1>
+            <p class="meta">
+                <strong>Aplicación:</strong> Abic<br>
+                <strong>Identificador:</strong> com.abic.app<br>
+                <strong>Última actualización:</strong> 27 de abril de 2026<br>
+                <strong>Vigencia:</strong> 27 de abril de 2026
+            </p>
+        </header>
+
+        <h2>1. Identidad del responsable</h2>
+        <p>
+            La aplicación móvil <strong>Abic</strong> (en adelante, "la Aplicación") es operada por
+            <strong>[NOMBRE_LEGAL]</strong>, con domicilio en <strong>[DOMICILIO]</strong>.
+            Para cualquier consulta relacionada con esta Política de Privacidad o con el tratamiento de
+            sus datos personales, puede contactarnos al correo electrónico
+            <a href="mailto:[EMAIL_CONTACTO]">apps@tornec.com</a>.
+        </p>
+
+        <h2>2. Alcance de esta política</h2>
+        <p>
+            Esta Política de Privacidad describe cómo recopilamos, usamos, almacenamos, compartimos y
+            protegemos la información personal de los usuarios que descargan, instalan o utilizan la
+            Aplicación. Al usar la Aplicación, usted acepta las prácticas descritas en este documento.
+        </p>
+        <p>
+            La Aplicación es una herramienta de seguridad personal y monitoreo que permite a los usuarios
+            comunicarse con una central de monitoreo, activar alertas de emergencia (SOS), compartir su
+            ubicación en tiempo real, recibir notificaciones y conectarse mediante Bluetooth a
+            dispositivos compatibles.
+        </p>
+
+        <h2>3. Datos que recopilamos</h2>
+        <p>
+            A continuación, detallamos las categorías de datos que la Aplicación puede recopilar, su
+            finalidad y la base legal de su tratamiento:
+        </p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Categoría de datos</th>
+                    <th>Información específica</th>
+                    <th>Finalidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Identificación de cuenta</strong></td>
+                    <td>Nombre, correo electrónico, número de teléfono, identificador único de usuario.</td>
+                    <td>Crear y autenticar su cuenta, asociarlo a una central de monitoreo y permitir el inicio de sesión.</td>
+                </tr>
+                <tr>
+                    <td><strong>Ubicación geográfica precisa</strong></td>
+                    <td>Coordenadas GPS (latitud y longitud) en tiempo real cuando la Aplicación está en uso o cuando se activa una alerta SOS.</td>
+                    <td>Mostrar su posición a la central de monitoreo durante una emergencia, mostrar mapas y enrutar respuestas de seguridad.</td>
+                </tr>
+                <tr>
+                    <td><strong>Datos de comunicación</strong></td>
+                    <td>Mensajes de texto enviados y recibidos en el chat con la central de monitoreo, audio transmitido en funciones de comunicación con central.</td>
+                    <td>Permitir la comunicación entre el usuario y los operadores de la central durante el monitoreo o eventos de emergencia.</td>
+                </tr>
+                <tr>
+                    <td><strong>Información del dispositivo</strong></td>
+                    <td>Modelo del dispositivo, sistema operativo y versión, identificador de instalación, token de notificaciones push (FCM).</td>
+                    <td>Entregar notificaciones push, diagnosticar problemas técnicos y mantener la seguridad de la sesión.</td>
+                </tr>
+                <tr>
+                    <td><strong>Conexiones Bluetooth</strong></td>
+                    <td>Identificadores de dispositivos Bluetooth Low Energy (BLE) compatibles, estado de conexión.</td>
+                    <td>Habilitar la autenticación o activación de funciones mediante dispositivos físicos compatibles emparejados por el usuario.</td>
+                </tr>
+                <tr>
+                    <td><strong>Datos de uso y diagnóstico</strong></td>
+                    <td>Eventos de la aplicación, errores, registros técnicos no personales.</td>
+                    <td>Mejorar la estabilidad, el rendimiento y la experiencia de uso de la Aplicación.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="callout">
+            <p>
+                <strong>Datos sensibles.</strong> La Aplicación recopila <strong>ubicación precisa</strong>
+                como dato esencial para su función principal de seguridad. Sin acceso a la ubicación, las
+                funciones SOS y de monitoreo no pueden operar correctamente. Usted puede revocar este
+                permiso en cualquier momento desde los ajustes del sistema, entendiendo que ello
+                deshabilitará las funciones críticas del servicio.
+            </p>
+        </div>
+
+        <h2>4. Permisos del dispositivo</h2>
+        <p>La Aplicación solicita los siguientes permisos del sistema operativo Android:</p>
+        <ul>
+            <li><strong>Ubicación precisa y aproximada</strong> (<code>ACCESS_FINE_LOCATION</code>, <code>ACCESS_COARSE_LOCATION</code>): para reportar su posición a la central de monitoreo y a otros usuarios autorizados durante eventos de seguridad.</li>
+            <li><strong>Internet</strong> (<code>INTERNET</code>): para sincronizar datos con nuestros servidores y enviar notificaciones.</li>
+            <li><strong>Bluetooth</strong>: para conectarse a dispositivos físicos compatibles emparejados por el usuario.</li>
+            <li><strong>Notificaciones</strong>: para informarle sobre eventos relevantes, mensajes de la central y alertas.</li>
+        </ul>
+
+        <h2>5. Cómo usamos sus datos</h2>
+        <p>Utilizamos los datos recopilados exclusivamente para los siguientes fines:</p>
+        <ol>
+            <li>Brindar el servicio de monitoreo y respuesta a emergencias.</li>
+            <li>Autenticar y mantener su sesión de usuario activa.</li>
+            <li>Permitir la comunicación bidireccional entre usted y la central.</li>
+            <li>Enviar notificaciones push sobre el estado del servicio o eventos relevantes.</li>
+            <li>Cumplir obligaciones legales o requerimientos de autoridades competentes.</li>
+            <li>Mejorar la calidad, seguridad y rendimiento de la Aplicación.</li>
+        </ol>
+        <p>
+            <strong>No utilizamos sus datos para fines publicitarios ni los vendemos a terceros.</strong>
+        </p>
+
+        <h2>6. Compartición de datos con terceros</h2>
+        <p>
+            La Aplicación se apoya en proveedores externos que actúan como encargados del tratamiento bajo
+            nuestras instrucciones y conforme a sus propias políticas de privacidad:
+        </p>
+        <ul>
+            <li>
+                <strong>Google LLC — Firebase Cloud Messaging (FCM):</strong> entrega de notificaciones push.
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>
+            </li>
+            <li>
+                <strong>Mapbox, Inc.:</strong> renderizado de mapas y servicios de geolocalización.
+                <a href="https://www.mapbox.com/legal/privacy" target="_blank" rel="noopener">mapbox.com/legal/privacy</a>
+            </li>
+            <li>
+                <strong>Servidores propios de la central de monitoreo:</strong> almacenamiento y procesamiento
+                de los datos del servicio.
+            </li>
+        </ul>
+        <p>
+            No compartimos información personal con terceros con fines comerciales, de publicidad o de
+            análisis de comportamiento que no estén directamente relacionados con la operación del servicio.
+        </p>
+
+        <h2>7. Almacenamiento y seguridad</h2>
+        <p>
+            La información se transmite mediante conexiones cifradas (HTTPS / WSS) y se almacena en
+            servidores con controles de acceso restringidos. Implementamos medidas técnicas y
+            organizativas razonables para proteger sus datos contra acceso no autorizado, alteración,
+            divulgación o destrucción.
+        </p>
+        <p>
+            Algunos datos (como su token de sesión y preferencias) se almacenan localmente en el
+            dispositivo mediante mecanismos seguros del sistema operativo. Estos datos se eliminan al
+            cerrar sesión o desinstalar la Aplicación.
+        </p>
+
+        <h2>8. Retención de datos</h2>
+        <p>
+            Conservamos sus datos personales durante el tiempo necesario para prestar el servicio y
+            cumplir obligaciones legales aplicables. Los registros de eventos de seguridad pueden
+            conservarse por un período mayor cuando sean requeridos para auditoría, defensa legal o
+            cumplimiento normativo.
+        </p>
+
+        <h2>9. Derechos del usuario</h2>
+        <p>
+            De acuerdo con la legislación aplicable en materia de protección de datos personales, usted
+            tiene derecho a:
+        </p>
+        <ul>
+            <li>Acceder a los datos personales que tenemos sobre usted.</li>
+            <li>Rectificar datos inexactos o incompletos.</li>
+            <li>Solicitar la supresión (eliminación) de sus datos.</li>
+            <li>Oponerse al tratamiento o solicitar su limitación.</li>
+            <li>Solicitar la portabilidad de sus datos.</li>
+            <li>Retirar el consentimiento otorgado, sin que ello afecte la licitud del tratamiento previo.</li>
+        </ul>
+        <p>
+            Para ejercer cualquiera de estos derechos, escríbanos a
+            <a href="mailto:[EMAIL_CONTACTO]">apps@tornec.com</a> indicando su solicitud.
+            Responderemos en un plazo máximo de 15 días hábiles.
+        </p>
+
+        <h2>10. Eliminación de cuenta y datos</h2>
+        <p>
+            Si desea eliminar su cuenta y los datos personales asociados, puede hacerlo de las
+            siguientes formas:
+        </p>
+        <ul>
+            <li>
+                Desde la Aplicación, en la sección <strong>Cuenta → Eliminar cuenta</strong>
+                (cuando esta opción esté disponible).
+            </li>
+            <li>
+                Enviando una solicitud por correo electrónico a
+                <a href="mailto:[EMAIL_CONTACTO]">apps@tornec.com</a> con el asunto
+                <em>"Eliminación de cuenta"</em>, indicando el correo o número de teléfono asociado.
+            </li>
+        </ul>
+        <p>
+            La eliminación se procesará en un plazo máximo de 30 días, salvo que la legislación nos
+            obligue a conservar determinada información por un período mayor (por ejemplo, registros
+            de eventos de seguridad o requerimientos judiciales).
+        </p>
+
+        <h2>11. Privacidad de menores</h2>
+        <p>
+            La Aplicación no está dirigida a menores de 13 años. No recopilamos intencionalmente datos
+            personales de menores. Si detectamos que se ha registrado un menor sin el consentimiento
+            verificable de su representante legal, eliminaremos la información correspondiente.
+        </p>
+
+        <h2>12. Cambios a esta política</h2>
+        <p>
+            Podemos actualizar esta Política de Privacidad ocasionalmente para reflejar cambios en la
+            Aplicación, en la legislación o en nuestras prácticas. La versión vigente estará siempre
+            disponible en esta misma URL, y la fecha de última actualización se mostrará al inicio del
+            documento. Los cambios materiales serán notificados dentro de la Aplicación o por correo
+            electrónico cuando corresponda.
+        </p>
+
+        <h2>13. Contacto</h2>
+        <p>
+            Si tiene preguntas, comentarios o reclamos sobre esta Política de Privacidad o sobre el
+            tratamiento de sus datos personales, puede contactarnos en:
+        </p>
+        <ul>
+            <li><strong>Responsable:</strong> Diego Vega</li>
+            <li><strong>Domicilio:</strong> Salcedo</li>
+            <li><strong>Correo electrónico:</strong> apps@tornec.com</li>
+        </ul>
+
+        <footer>
+            <p>&copy; 2026 ABIC. Todos los derechos reservados.</p>
+        </footer>
+    </main>
+</body>
+</html>
