@@ -1,0 +1,224 @@
+<ion-header>
+    <ion-toolbar class="agenda-toolbar">
+        <ion-buttons slot="start">
+            <ion-back-button [text]="'core.back' | translate" />
+        </ion-buttons>
+        <ion-title>
+            <h1>Mi Agenda</h1>
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="toggleView()" [attr.aria-label]="'Cambiar vista'">
+                <ion-icon slot="icon-only"
+                    [name]="viewMode === 'timeline' ? 'due-list-timeline-duotone' : 'due-calendar-days-duotone'"
+                    aria-hidden="true" />
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <!-- Pinned date navigator -->
+    <div class="agenda-date-nav">
+        <ion-button fill="clear" (click)="goPrev()" class="nav-arrow" [disabled]="!canGoPrev()">
+            <ion-icon slot="icon-only" name="due-left" aria-hidden="true" />
+        </ion-button>
+        <div class="date-label">
+            <h2>{{ formatDateLong(selectedDate) }}</h2>
+            @if (isToday()) {
+                <p>Hoy</p>
+            } @else if (isEventDayToday()) {
+                <button class="date-today-link" (click)="goToday()">Hoy</button>
+            }
+        </div>
+        <ion-button fill="clear" (click)="goNext()" class="nav-arrow" [disabled]="!canGoNext()">
+            <ion-icon slot="icon-only" name="due-right" aria-hidden="true" />
+        </ion-button>
+    </div>
+</ion-header>
+
+<ion-content class="agenda-content">
+
+    <core-loading [hideUntil]="workshopsLoaded">
+
+        <!-- Empty state (list view only — timeline shows grid even when empty) -->
+        @if (viewMode === 'list' && !listItemsForSelectedDay().length) {
+            <div class="agenda-empty">
+                <ion-icon name="due-calendar-xmark-duotone-xmark" aria-hidden="true" />
+                <p>No hay talleres ni ponencias programados para este día.</p>
+            </div>
+        }
+
+        <!-- TIMELINE VIEW -->
+        @if (viewMode === 'timeline') {
+            <div class="agenda-timeline">
+                <div class="timeline-grid">
+                    @for (hour of timelineHours; track hour) {
+                        <div class="timeline-row">
+                            <div class="timeline-hour">{{ formatHour(hour) }}</div>
+                            <div class="timeline-cell"></div>
+                        </div>
+                    }
+                </div>
+                <div class="timeline-blocks">
+                    @for (item of timelineItemsForSelectedDay(); track item.key) {
+                        <button class="timeline-block"
+                            [class.is-calendar]="item.kind === 'calendar'"
+                            [ngStyle]="blockStyle(item)"
+                            (click)="openItem(item)">
+                            @if (item.kind === 'calendar') {
+                                <span class="block-tag">
+                                    <ion-icon name="due-calendar-duotone" aria-hidden="true" />
+                                    Evento
+                                </span>
+                            }
+                            <h3>{{ itemTitle(item) }}</h3>
+                            @if (itemSummary(item)) {
+                                <p class="block-summary">{{ itemSummary(item) | coreNoTags }}</p>
+                            }
+                            <p class="block-time">{{ formatTime(itemStart(item)) }} · {{ formatDuration(item) }}</p>
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+
+        <!-- LIST VIEW -->
+        @if (viewMode === 'list' && listItemsForSelectedDay().length) {
+            <div class="agenda-list">
+                @for (item of listItemsForSelectedDay(); track item.key) {
+                    <button class="list-row" [class.is-calendar]="item.kind === 'calendar'" (click)="openItem(item)">
+                        <div class="list-time">
+                            <span class="list-time-start">{{ formatTime(itemStart(item)) }}</span>
+                            <span class="list-time-duration">{{ formatDuration(item) }}</span>
+                        </div>
+                        <div class="list-bar" [style.background]="itemColor(item)"></div>
+                        <div class="list-info">
+                            @if (item.kind === 'calendar') {
+                                <span class="list-kind-tag">
+                                    <ion-icon name="due-calendar-duotone" aria-hidden="true" />
+                                    Ponencia
+                                </span>
+                            }
+                            <h3>{{ itemTitle(item) }}</h3>
+                            @if (itemSummary(item)) {
+                                <p>{{ itemSummary(item) | coreNoTags }}</p>
+                            }
+                            @if (item.kind === 'workshop' && item.workshop.enrolled) {
+                                <span class="list-enrolled-tag">
+                                    <ion-icon name="fas-circle-check" aria-hidden="true" />
+                                    Matriculado
+                                </span>
+                            }
+                        </div>
+                        <ion-icon class="list-chevron" name="fas-chevron-right" aria-hidden="true" />
+                    </button>
+                }
+            </div>
+        }
+
+    </core-loading>
+
+    <!-- DETAIL MODAL -->
+    <ion-modal [isOpen]="showDetailModal" (didDismiss)="closeWorkshop()" [initialBreakpoint]="1" [breakpoints]="[0, 1]">
+        <ng-template>
+            @if (selectedWorkshop; as w) {
+                <div class="workshop-detail">
+                    <div class="detail-cover" [style.background]="w.color">
+                        <ion-button class="detail-back" fill="clear" (click)="closeWorkshop()">
+                            <ion-icon slot="icon-only" name="due-left" aria-hidden="true" />
+                        </ion-button>
+                        @if (w.courseimage) {
+                            <img [url]="w.courseimage" core-external-content alt="" class="detail-cover-img" />
+                        }
+                    </div>
+
+                    <div class="detail-body">
+                        @if (w.enrolled) {
+                            <span class="detail-pill enrolled">En tu agenda</span>
+                        } @else {
+                            <span class="detail-pill">Taller disponible</span>
+                        }
+
+                        <h2 class="detail-title">{{ w.fullname }}</h2>
+
+                        <div class="detail-meta">
+                            <div class="meta-row">
+                                <ion-icon name="due-clock-duotone" aria-hidden="true" />
+                                <span>{{ formatDateLong(selectedDate) }}, {{ formatTime(w.startdate) }} · {{ formatDuration(w) }}</span>
+                            </div>
+                            @if (w.location) {
+                                <div class="meta-row">
+                                    <ion-icon name="due-location-dot-duotone" aria-hidden="true" />
+                                    <span>{{ w.location }}</span>
+                                </div>
+                            }
+                        </div>
+
+                        @if (w.summary) {
+                            <p class="detail-summary" [innerHTML]="w.summary"></p>
+                        }
+
+                        <!-- Teachers -->
+                        @if (w.teachers?.length) {
+                            <div class="detail-teachers">
+                                <span class="detail-teachers-label">Docentes</span>
+                                <div class="detail-teachers-list">
+                                    @for (t of w.teachers; track t.id) {
+                                        <div class="teacher-chip">
+                                            <core-user-avatar class="teacher-avatar" [profileUrl]="t.pictureurl"
+                                                [fullname]="t.fullname" [userId]="t.id" [linkProfile]="false" />
+                                            <span class="teacher-name">{{ t.fullname }}</span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Capacity -->
+                        @if (w.maxEnrolled > 0 || w.currentEnrolled > 0) {
+                            <div class="detail-capacity" [class]="capacityClass(w)">
+                                <div class="capacity-header">
+                                    <span class="capacity-label">Cupo</span>
+                                    <span class="capacity-value">{{ capacityLabel(w) }}</span>
+                                </div>
+                                @if (w.maxEnrolled > 0) {
+                                    <div class="capacity-bar">
+                                        <div class="capacity-fill" [style.width.%]="capacityRatio(w) * 100"
+                                            [style.background]="w.color"></div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <div class="detail-footer">
+                        @if (w.enrolled) {
+                            <ion-button expand="block" fill="outline" class="detail-action enrolled">
+                                <ion-icon slot="start" name="fas-circle-check" aria-hidden="true" />
+                                Ya estás matriculado
+                            </ion-button>
+                        } @else if (w.isfull) {
+                            <ion-button expand="block" class="detail-action" [disabled]="true">
+                                Cupo lleno
+                            </ion-button>
+                        } @else if (!w.canselfenrol) {
+                            <ion-button expand="block" class="detail-action" [disabled]="true">
+                                Matriculación no disponible
+                            </ion-button>
+                        } @else if (w.requireskey) {
+                            <ion-button expand="block" class="detail-action" [disabled]="true">
+                                <ion-icon slot="start" name="fas-key" aria-hidden="true" />
+                                Requiere clave de matriculación
+                            </ion-button>
+                        } @else {
+                            <ion-button expand="block" class="detail-action"
+                                [disabled]="enrolling"
+                                (click)="enrolInWorkshop()">
+                                <ion-icon slot="start" name="due-calendar-circle-plus-duotone-plus" aria-hidden="true" />
+                                Matricularme
+                            </ion-button>
+                        }
+                    </div>
+                </div>
+            }
+        </ng-template>
+    </ion-modal>
+
+</ion-content>

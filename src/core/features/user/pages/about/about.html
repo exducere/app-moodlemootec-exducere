@@ -1,0 +1,282 @@
+<ion-content class="moot-profile-content">
+    <ion-refresher slot="fixed" [disabled]="!userLoaded" (ionRefresh)="refreshUser($event.target)">
+        <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}" />
+    </ion-refresher>
+
+    <core-loading [hideUntil]="userLoaded" placeholderType="column" placeholderHeight="48px">
+        @if (user) {
+            <!-- Hero: avatar, name, username -->
+            <section class="moot-profile-hero">
+                <div class="moot-profile-avatar-wrapper">
+                    <core-user-avatar class="moot-profile-avatar" [user]="user" [userId]="user.id"
+                        [linkProfile]="false" [checkOnline]="!canChangeProfilePicture">
+                        @if (canChangeProfilePicture) {
+                            <ion-button class="moot-profile-avatar-edit" (click)="changeProfilePicture()"
+                                [ariaLabel]="'core.user.newpicture' | translate" fill="clear">
+                                <ion-icon slot="icon-only" name="fas-pen" aria-hidden="true" />
+                            </ion-button>
+                        }
+                    </core-user-avatar>
+                </div>
+
+                <h2 class="moot-profile-name">{{ user.fullname }}</h2>
+                @if (user.email) {
+                    <p class="moot-profile-username">{{ '@' + (user.email.split('@')[0]) }}</p>
+                }
+            </section>
+
+            <!-- Quick actions grid: QR / Moodle Flow / Add user -->
+            <section class="moot-profile-quick">
+                <button class="moot-profile-quick-tile" (click)="openProfileQR()">
+                    <span class="moot-profile-quick-icon">
+                        <ion-icon name="due-qrcode-white" aria-hidden="true" />
+                    </span>
+                    <span class="moot-profile-quick-label">Mostrar QR</span>
+                </button>
+                <button class="moot-profile-quick-tile" (click)="startMoodleFlowLogin()">
+                    <span class="moot-profile-quick-icon">
+                        <ion-icon name="due-moodle-white" aria-hidden="true" />
+                    </span>
+                    <span class="moot-profile-quick-label">Moodle Flow</span>
+                </button>
+                <button class="moot-profile-quick-tile" (click)="scanUserQR()">
+                    <span class="moot-profile-quick-icon">
+                        <ion-icon name="due-qrcode-read-white" aria-hidden="true" />
+                    </span>
+                    <span class="moot-profile-quick-label">Agregar contacto</span>
+                </button>
+            </section>
+
+            <!-- Description -->
+            @if (user.description) {
+                <section class="moot-profile-card moot-profile-about">
+                    <h3 class="moot-profile-section-title">Acerca de mí</h3>
+                    <div class="moot-profile-description">
+                        <core-format-text [text]="user.description" contextLevel="user" [contextInstanceId]="user.id"
+                            [courseId]="courseId" />
+                    </div>
+                </section>
+            }
+
+            <!-- Contact info -->
+            @if (user.email || user.city) {
+                <section class="moot-profile-card">
+                    <h3 class="moot-profile-section-title">{{ 'core.user.contact' | translate }}</h3>
+                    <ul class="moot-profile-list">
+                        @if (user.email) {
+                            <li class="moot-profile-row">
+                                <span class="moot-profile-row-icon">
+                                    <ion-icon name="due-circle-envelope-duotone" aria-hidden="true" />
+                                </span>
+                                <div class="moot-profile-row-body">
+                                    <span class="moot-profile-row-label">{{ 'core.user.email' | translate }}</span>
+                                    <a class="moot-profile-row-value" href="mailto:{{user.email}}" core-link
+                                        [autoLogin]="false" [showBrowserWarning]="false">{{ user.email }}</a>
+                                </div>
+                            </li>
+                        }
+                        @if (user.city) {
+                            <li class="moot-profile-row">
+                                <span class="moot-profile-row-icon">
+                                    <ion-icon name="due-location-dot-duotone" aria-hidden="true" />
+                                </span>
+                                <div class="moot-profile-row-body">
+                                    <span class="moot-profile-row-label">{{ 'core.user.city' | translate }}</span>
+                                    <span class="moot-profile-row-value">{{ user.city }}</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </section>
+            }
+
+            <!-- Enrolled workshops (only for current user) -->
+            @if (isCurrentUser) {
+                <section class="moot-profile-workshops">
+                    <header class="moot-profile-workshops-header">
+                        <h3 class="moot-profile-section-title">Mis talleres</h3>
+                        @if (enrolledLoaded && enrolledWorkshops.length) {
+                            <span class="moot-profile-workshops-count">{{ enrolledWorkshops.length }}</span>
+                        }
+                    </header>
+
+                    @if (!enrolledLoaded) {
+                        <div class="moot-profile-workshop-skeleton">
+                            <div class="moot-profile-workshop-skeleton-row"></div>
+                            <div class="moot-profile-workshop-skeleton-row"></div>
+                        </div>
+                    } @else if (!enrolledWorkshops.length) {
+                        <div class="moot-profile-workshops-empty">
+                            <ion-icon name="due-calendar-xmark-duotone-xmark" aria-hidden="true" />
+                            <p>Aún no tienes talleres matriculados.</p>
+                        </div>
+                    } @else {
+                        <div class="moot-profile-workshop-list">
+                            @for (w of enrolledWorkshops; track w.id) {
+                                <button class="moot-profile-workshop-card" (click)="openEnrolledWorkshop(w)">
+                                    <div class="moot-profile-workshop-cover">
+                                        @if (w.courseimage) {
+                                            <img [url]="w.courseimage" core-external-content alt=""
+                                                class="moot-profile-workshop-cover-img" />
+                                        } @else {
+                                            <ion-icon name="due-graduation-cap-duotone" aria-hidden="true" />
+                                        }
+                                    </div>
+                                    <div class="moot-profile-workshop-info">
+                                        <span class="moot-profile-workshop-tag">
+                                            <ion-icon name="fas-circle-check" aria-hidden="true" />
+                                            Matriculado
+                                        </span>
+                                        <h4 class="moot-profile-workshop-title">{{ w.fullname }}</h4>
+                                        <div class="moot-profile-workshop-meta">
+                                            @if (formatWorkshopDate(w); as dateText) {
+                                                <span class="moot-profile-workshop-meta-row">
+                                                    <ion-icon name="due-clock-duotone" aria-hidden="true" />
+                                                    {{ dateText }}
+                                                </span>
+                                            }
+                                            @if (w.moot_room) {
+                                                <span class="moot-profile-workshop-meta-row">
+                                                    <ion-icon name="due-location-dot-duotone" aria-hidden="true" />
+                                                    {{ w.moot_room }}
+                                                </span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <ion-icon class="moot-profile-workshop-chevron" name="fas-chevron-right"
+                                        aria-hidden="true" />
+                                </button>
+                            }
+                        </div>
+                    }
+                </section>
+            }
+
+            <!-- Details: interests + custom fields -->
+            @if (hasDetails) {
+                <section class="moot-profile-card">
+                    <h3 class="moot-profile-section-title">{{ 'core.userdetails' | translate }}</h3>
+
+                    @if (interests) {
+                        <div class="moot-profile-interests">
+                            <span class="moot-profile-row-label">{{ 'core.user.interests' | translate }}</span>
+                            <div class="moot-profile-interests-list">
+                                <button class="moot-profile-chip" *ngFor="let interest of interests"
+                                    (click)="openInterest(interest)">{{ interest }}</button>
+                            </div>
+                        </div>
+                    }
+
+                    <core-user-profile-field *ngFor="let field of user.customfields" [field]="field"
+                        contextLevel="course" [contextInstanceId]="courseId" [courseId]="courseId" />
+                </section>
+            }
+        }
+
+        @if (!user || (!hasContact && !hasDetails && !user.description)) {
+            <core-empty-box icon="fas-user" [message]=" 'core.user.detailsnotavailable' | translate" />
+        }
+    </core-loading>
+
+    <!-- QR MODAL (floating dialog) -->
+    <ion-modal id="moot-profile-qr-modal" [isOpen]="showQRModal" (didDismiss)="closeProfileQR()">
+        <ng-template>
+            <div class="moot-profile-qr-dialog">
+                <header class="moot-profile-qr-header">
+                    <h2>Mi QR</h2>
+                    <button class="moot-profile-qr-close" (click)="closeProfileQR()" aria-label="Cerrar">
+                        <ion-icon name="fas-xmark" aria-hidden="true" />
+                    </button>
+                </header>
+
+                <div class="moot-profile-qr-card">
+                    @if (qrDataUrl) {
+                        <img [src]="qrDataUrl" alt="Código QR del perfil" class="moot-profile-qr-image" />
+                    }
+                </div>
+
+                @if (user?.email) {
+                    <p class="moot-profile-qr-code">{{ user?.email }}</p>
+                }
+
+                <div class="moot-profile-qr-actions">
+                    <button class="moot-profile-qr-action" (click)="closeProfileQR()">
+                        <ion-icon name="fas-share-nodes" aria-hidden="true" />
+                        <span>Compartir</span>
+                    </button>
+                    <button class="moot-profile-qr-action" (click)="closeProfileQR()">
+                        <ion-icon name="fas-download" aria-hidden="true" />
+                        <span>Descargar</span>
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+    </ion-modal>
+
+    <!-- SCANNED USER MODAL -->
+    <ion-modal id="moot-profile-scan-modal" [isOpen]="showScannedUserModal" (didDismiss)="closeScannedUser()">
+        <ng-template>
+            <div class="moot-profile-scan-dialog">
+                <header class="moot-profile-scan-header">
+                    <h2>Usuario escaneado</h2>
+                    <button class="moot-profile-qr-close" (click)="closeScannedUser()" aria-label="Cerrar">
+                        <ion-icon name="fas-xmark" aria-hidden="true" />
+                    </button>
+                </header>
+
+                @if (scannedUser) {
+                    <div class="moot-profile-scan-body">
+                        <core-user-avatar class="moot-profile-scan-avatar" [user]="scannedUser"
+                            [userId]="scannedUser.id" [linkProfile]="false" [checkOnline]="false" />
+                        <h3 class="moot-profile-scan-name">{{ scannedUser.fullname }}</h3>
+                        @if (scannedUser.email) {
+                            <p class="moot-profile-scan-email">{{ scannedUser.email }}</p>
+                        }
+
+                        <ul class="moot-profile-list moot-profile-scan-list">
+                            @if (scannedUser.city) {
+                                <li class="moot-profile-row">
+                                    <span class="moot-profile-row-icon">
+                                        <ion-icon name="due-location-dot-duotone" aria-hidden="true" />
+                                    </span>
+                                    <div class="moot-profile-row-body">
+                                        <span class="moot-profile-row-label">{{ 'core.user.city' | translate }}</span>
+                                        <span class="moot-profile-row-value">{{ scannedUser.city }}</span>
+                                    </div>
+                                </li>
+                            }
+                            @if (scannedUser.country) {
+                                <li class="moot-profile-row">
+                                    <span class="moot-profile-row-icon">
+                                        <ion-icon name="due-earth-americas-sharp-duotone" aria-hidden="true" />
+                                    </span>
+                                    <div class="moot-profile-row-body">
+                                        <span class="moot-profile-row-label">{{ 'core.user.country' | translate }}</span>
+                                        <span class="moot-profile-row-value">{{ scannedUser.country }}</span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="moot-profile-scan-footer">
+                        <ion-button expand="block" class="moot-profile-scan-primary"
+                            [disabled]="requestSending || requestSent" (click)="sendConnectionRequest()">
+                            @if (requestSent) {
+                                <ion-icon slot="start" name="fas-circle-check" aria-hidden="true" />
+                                Solicitud enviada
+                            } @else {
+                                <ion-icon slot="start" name="fas-user-plus" aria-hidden="true" />
+                                Enviar solicitud
+                            }
+                        </ion-button>
+                        <ion-button expand="block" fill="outline" class="moot-profile-scan-secondary"
+                            (click)="closeScannedUser()">
+                            Cerrar
+                        </ion-button>
+                    </div>
+                }
+            </div>
+        </ng-template>
+    </ion-modal>
+</ion-content>

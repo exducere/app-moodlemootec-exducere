@@ -1,0 +1,611 @@
+@use "theme/globals" as *;
+
+// ─── Moodle Moot Ecuador palette ──────────────────────────────────────────────
+// Primary
+$moot-blue:        #194866;  // Moodle Blue (primary)
+$moot-orange:      #f98012;  // Moodle Orange
+$moot-black:       #282828;  // Moodle Black
+// Secondary
+$moot-light-blue:  #65a1b3;
+$moot-peach:       #fedec3;
+$moot-medium-peach:#ffecdb;
+$moot-bright-blue: #69e0ff;
+
+// Semantic aliases
+$agenda-primary:   $moot-blue;
+$agenda-orange:    $moot-orange;
+$agenda-accent:    $moot-bright-blue;
+$agenda-text:      $moot-black;
+$agenda-muted:     #6b7280;
+$agenda-bg:        $moot-medium-peach;
+$agenda-row-line:  rgba($moot-blue, 0.12);
+$row-height: 80px;
+
+:host {
+    --agenda-row-height: #{$row-height};
+}
+
+// ─── Toolbar ──────────────────────────────────────────────────────────────────
+.agenda-toolbar {
+    --background: #{$moot-blue};
+    --color: #ffffff;
+    --border-color: transparent;
+
+    h1 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+    }
+
+    ion-button {
+        --color: #ffffff;
+    }
+}
+
+// ─── Content ──────────────────────────────────────────────────────────────────
+.agenda-content {
+    --background: #ffffff;
+}
+
+// ─── Date navigator ───────────────────────────────────────────────────────────
+.agenda-date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 8px 16px;
+    border-bottom: 1px solid $agenda-row-line;
+    background: #ffffff;
+
+    .nav-arrow {
+        --color: #{$moot-blue};
+        --padding-start: 8px;
+        --padding-end: 8px;
+        ion-icon{
+            font-size: 30px !important;
+        }
+
+        &[disabled] {
+            opacity: 0.25;
+        }
+    }
+
+    .date-label {
+        flex: 1;
+        text-align: center;
+
+        h2 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+            color: $moot-blue;
+            text-transform: capitalize;
+        }
+
+        p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            color: $agenda-muted;
+        }
+
+        .date-today-link {
+            margin: 4px 0 0;
+            background: transparent;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            color: $moot-orange;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 999px;
+            transition: background 0.15s ease;
+
+            &:hover, &:focus {
+                background: rgba($moot-orange, 0.12);
+            }
+        }
+    }
+}
+
+// ─── Empty state ──────────────────────────────────────────────────────────────
+.agenda-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    color: $agenda-muted;
+    text-align: center;
+    gap: 12px;
+
+    ion-icon {
+        font-size: 48px;
+        color: rgba($moot-blue, 0.4);
+    }
+
+    p {
+        font-size: 14px;
+        margin: 0;
+    }
+}
+
+// ─── Timeline view ────────────────────────────────────────────────────────────
+.agenda-timeline {
+    position: relative;
+    background: white;
+    padding: 8px 12px 24px 0;
+}
+
+.timeline-grid {
+    position: relative;
+}
+
+.timeline-row {
+    display: flex;
+    align-items: flex-start;
+    height: $row-height;
+    border-top: 1px solid $agenda-row-line;
+
+    &:last-child {
+        border-bottom: 1px solid $agenda-row-line;
+    }
+
+    .timeline-hour {
+        flex: 0 0 64px;
+        padding: 4px 8px 0 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: $agenda-muted;
+        transform: translateY(-8px);
+    }
+
+    .timeline-cell {
+        flex: 1;
+        height: 100%;
+    }
+}
+
+.timeline-blocks {
+    position: absolute;
+    top: 8px;
+    left: 64px;
+    right: 12px;
+    bottom: 24px;
+    pointer-events: none;
+}
+
+.timeline-block {
+    position: absolute;
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    text-align: left;
+    padding: 10px 12px;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 2px 6px rgba(#000, 0.08);
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover, &:focus {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(#000, 0.15);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    h3 {
+        margin: 0 0 4px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 1.25;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .block-summary {
+        margin: 0 0 6px;
+        font-size: 12px;
+        color: rgba(#ffffff, 0.85);
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .block-time {
+        margin: 0;
+        font-size: 11px;
+        color: rgba(#ffffff, 0.78);
+        font-weight: 500;
+    }
+
+    .block-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 4px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(#ffffff, 0.18);
+        color: #ffffff;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+
+        ion-icon {
+            font-size: 11px;
+        }
+    }
+
+    &.is-calendar {
+        border: 1.5px dashed rgba(#ffffff, 0.55);
+    }
+}
+
+// ─── List view ────────────────────────────────────────────────────────────────
+.agenda-list {
+    padding: 8px 0;
+}
+
+.list-row {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    background: #ffffff;
+    border: none;
+    border-bottom: 1px solid $agenda-row-line;
+    padding: 14px 12px 14px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s ease;
+
+    &:hover, &:focus {
+        background: rgba($moot-blue, 0.04);
+    }
+
+    .list-time {
+        flex: 0 0 76px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        .list-time-start {
+            font-size: 14px;
+            font-weight: 700;
+            color: $agenda-text;
+        }
+
+        .list-time-duration {
+            font-size: 12px;
+            color: $agenda-muted;
+        }
+    }
+
+    .list-bar {
+        flex: 0 0 4px;
+        border-radius: 4px;
+        margin: 0 12px;
+    }
+
+    .list-info {
+        flex: 1;
+        min-width: 0;
+
+        h3 {
+            margin: 0 0 4px;
+            font-size: 15px;
+            font-weight: 700;
+            color: $agenda-text;
+            line-height: 1.3;
+        }
+
+        p {
+            margin: 0;
+            font-size: 12px;
+            color: $agenda-muted;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .list-enrolled-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            color: $moot-orange;
+
+            ion-icon {
+                font-size: 12px;
+            }
+        }
+
+        .list-kind-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 4px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba($moot-light-blue, 0.18);
+            color: $moot-blue;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+
+            ion-icon {
+                font-size: 11px;
+            }
+        }
+    }
+
+    &.is-calendar .list-bar {
+        background-image: repeating-linear-gradient(
+            45deg,
+            rgba(#ffffff, 0.35) 0 4px,
+            transparent 4px 8px
+        );
+    }
+
+    .list-chevron {
+        align-self: center;
+        font-size: 14px;
+        color: $agenda-muted;
+        margin-left: 8px;
+    }
+}
+
+// ─── Detail modal ─────────────────────────────────────────────────────────────
+ion-modal {
+    --height: auto;
+    --max-height: 92vh;
+    --border-radius: 24px 24px 0 0;
+}
+
+.workshop-detail {
+    background: #ffffff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 92vh;
+}
+
+.detail-cover {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+
+    .detail-back {
+        --background: rgba(#ffffff, 0.92);
+        --color: #{$agenda-text};
+        --border-radius: 50%;
+        --padding-start: 0;
+        --padding-end: 0;
+        width: 40px;
+        height: 40px;
+        margin: 0;
+        z-index: 2;
+    }
+
+    .detail-cover-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.8;
+    }
+}
+
+.detail-body {
+    padding: 20px 20px 12px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.detail-pill {
+    display: inline-block;
+    background: $moot-medium-peach;
+    color: $moot-blue;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+
+    &.enrolled {
+        background: rgba($moot-orange, 0.15);
+        color: $moot-orange;
+    }
+}
+
+.detail-title {
+    margin: 0 0 16px;
+    font-size: 22px;
+    font-weight: 800;
+    color: $agenda-text;
+    line-height: 1.25;
+}
+
+.detail-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+
+    .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: $agenda-muted;
+
+        ion-icon {
+            font-size: 16px;
+            color: $moot-blue;
+            flex-shrink: 0;
+        }
+    }
+}
+
+.detail-summary {
+    font-size: 14px;
+    line-height: 1.55;
+    color: #374151;
+    margin: 0 0 20px;
+}
+
+// ─── Teachers ─────────────────────────────────────────────────────────────────
+.detail-teachers {
+    margin-bottom: 18px;
+
+    .detail-teachers-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: $moot-blue;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 10px;
+    }
+
+    .detail-teachers-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 10px;
+    }
+
+    .teacher-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 12px 4px 4px;
+        background: $moot-medium-peach;
+        border-radius: 999px;
+        max-width: 100%;
+    }
+
+    .teacher-avatar {
+        --core-avatar-size: 32px;
+        --core-avatar-radius: 50%;
+        flex-shrink: 0;
+        display: inline-block;
+    }
+
+    .teacher-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: $agenda-text;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+// ─── Capacity ─────────────────────────────────────────────────────────────────
+.detail-capacity {
+    background: $moot-medium-peach;
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+
+    .capacity-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 10px;
+    }
+
+    .capacity-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: $moot-blue;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .capacity-value {
+        font-size: 15px;
+        font-weight: 700;
+        color: $moot-blue;
+    }
+
+    .capacity-bar {
+        position: relative;
+        height: 8px;
+        background: rgba($moot-blue, 0.12);
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .capacity-fill {
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        border-radius: 999px;
+        background: $moot-blue;
+        transition: width 0.3s ease;
+    }
+
+    &.near-full .capacity-fill {
+        background: $moot-orange !important;
+    }
+
+    &.full {
+        background: rgba(#c1121f, 0.08);
+
+        .capacity-value {
+            color: #c1121f;
+        }
+
+        .capacity-fill {
+            background: #c1121f !important;
+        }
+    }
+}
+
+// ─── Footer button ────────────────────────────────────────────────────────────
+.detail-footer {
+    padding: 12px 20px 24px;
+    border-top: 1px solid $agenda-row-line;
+    background: #ffffff;
+}
+
+.detail-action {
+    --background: #{$moot-blue};
+    --background-activated: #{darken($moot-blue, 6%)};
+    --color: #ffffff;
+    --border-radius: 50px;
+    --box-shadow: 0 4px 14px rgba($moot-blue, 0.32);
+    height: 52px;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: none;
+    margin: 0;
+
+    &.enrolled {
+        --background: transparent;
+        --color: #{$moot-orange};
+        --border-color: #{$moot-orange};
+        --border-width: 1.5px;
+        --box-shadow: none;
+    }
+}

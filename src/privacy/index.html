@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Política de privacidad de la aplicación Moodle Moot Ecuador 2026">
+    <title>Política de Privacidad · Moodle Moot Ecuador 2026</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/img/moodlemoot/favicon.svg">
+    <style>
+        :root {
+            --primary: #1b4965;
+            --primary-dark: #0f2e44;
+            --accent: #ff7b00;
+            --text: #2a2a2a;
+            --text-muted: #5a6b7a;
+            --bg: #f6f8fb;
+            --surface: #ffffff;
+            --border: #e1e7ef;
+            --radius: 12px;
+            --shadow: 0 4px 20px rgba(15, 46, 68, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #fff;
+            padding: 48px 20px 64px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 -40px 0;
+            height: 80px;
+            background: var(--bg);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        }
+
+        .header-logo {
+            max-width: 260px;
+            width: 70%;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+        }
+
+        header h1 {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
+
+        main {
+            max-width: 880px;
+            margin: -32px auto 0;
+            padding: 0 20px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 32px clamp(20px, 4vw, 44px);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 22px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        h2:first-of-type {
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--primary-dark);
+            font-size: 1.05rem;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        p, li {
+            color: var(--text);
+            margin-bottom: 12px;
+            font-size: 0.96rem;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #eaf4fb, #f4eaff);
+            border-left: 4px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .highlight strong {
+            color: var(--primary);
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted var(--primary);
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .sponsors {
+            text-align: center;
+            padding: 32px 20px;
+        }
+
+        .sponsors h3 {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .sponsors-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 28px 40px;
+        }
+
+        .sponsors-grid img {
+            max-height: 50px;
+            max-width: 140px;
+            width: auto;
+            height: auto;
+            opacity: 0.75;
+            transition: opacity 0.3s, transform 0.3s;
+            filter: grayscale(30%);
+        }
+
+        .sponsors-grid img:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        footer {
+            background: var(--primary-dark);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 32px 20px;
+            font-size: 0.85rem;
+        }
+
+        footer img {
+            max-height: 60px;
+            margin-bottom: 16px;
+            opacity: 0.9;
+        }
+
+        footer p {
+            color: inherit;
+            margin-bottom: 4px;
+        }
+
+        footer a {
+            color: #fff;
+            border-bottom-color: rgba(255, 255, 255, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 36px 16px 56px;
+            }
+
+            .card {
+                padding: 24px 18px;
+            }
+
+            h2 {
+                font-size: 1.15rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="../assets/img/moodlemoot/logl_moodle_moot_2026_white.svg"
+         alt="Moodle Moot Ecuador 2026"
+         class="header-logo">
+    <h1>Política de Privacidad</h1>
+    <p>Aplicación oficial del evento · MoodleMoot Ecuador 2026</p>
+</header>
+
+<main>
+    <article class="card">
+        <div class="meta">
+            <span class="badge">Vigente</span>
+            <span>Última actualización: 24 de abril de 2026</span>
+            <span>Versión: 5.1.0</span>
+        </div>
+
+        <div class="highlight">
+            <p>
+                <strong>Resumen:</strong> La aplicación <em>Moodle Moot Ecuador 2026</em>
+                no recopila, almacena ni comercializa datos personales. Funciona como cliente
+                de una plataforma Moodle mediante servicios web oficiales, permitiendo a los
+                asistentes consultar su agenda, matricularse en talleres (cursos) y recibir
+                notificaciones del evento.
+            </p>
+        </div>
+
+        <h2>1. Información General</h2>
+        <p>
+            La aplicación <strong>Moodle Moot Ecuador 2026</strong> (identificada como
+            <code>com.moodlemootec.exducere</code>) es una adaptación del cliente oficial
+            <em>Moodle Mobile App</em>, diseñada específicamente para acompañar a los
+            asistentes del evento <strong>MoodleMoot Ecuador 2026</strong>.
+        </p>
+        <p>
+            Su propósito principal es ofrecer una experiencia centralizada para:
+        </p>
+        <ul>
+            <li>Consultar la <strong>agenda</strong> del evento por día y franja horaria.</li>
+            <li>Explorar y <strong>matricularse en talleres</strong>, los cuales funcionan como
+                cursos dentro de la plataforma Moodle asociada.</li>
+            <li>Recibir <strong>notificaciones</strong> relacionadas con actividades,
+                cambios de agenda o anuncios del evento.</li>
+            <li>Acceder a los materiales del curso facilitados por los talleristas.</li>
+        </ul>
+
+        <h2>2. Datos que NO recopila la aplicación</h2>
+        <p>
+            La app <strong>no recopila información personal con fines propios</strong>. En
+            particular, no realiza ninguna de las siguientes actividades:
+        </p>
+        <ul>
+            <li>No rastrea la ubicación del dispositivo.</li>
+            <li>No comparte información con redes publicitarias o terceros comerciales.</li>
+            <li>No accede a contactos, mensajes, fotos ni archivos del usuario sin su
+                consentimiento explícito.</li>
+            <li>No utiliza cookies de rastreo ni sistemas de <em>fingerprinting</em>.</li>
+            <li>No vende ni cede datos a terceros bajo ningún concepto.</li>
+        </ul>
+
+        <h2>3. Conexión con la plataforma Moodle</h2>
+        <p>
+            Toda la información funcional (usuario, agenda, talleres, inscripciones,
+            notificaciones, etc.) se gestiona a través de los <strong>servicios web oficiales
+            de Moodle</strong> proporcionados por el servidor del evento. La aplicación
+            actúa como un <em>cliente</em> que consume dichos servicios mediante conexiones
+            cifradas (HTTPS).
+        </p>
+        <p>
+            En consecuencia, el tratamiento de los datos asociados a tu cuenta
+            (nombre, correo electrónico, inscripciones, progreso en talleres, etc.) se rige
+            por la política de privacidad del propio sitio Moodle al que te conectas.
+        </p>
+
+        <h3>Qué información se transmite</h3>
+        <ul>
+            <li><strong>Credenciales de acceso</strong> — enviadas de forma segura únicamente
+                al servidor Moodle configurado por el evento.</li>
+            <li><strong>Token de sesión</strong> — almacenado localmente en el dispositivo
+                para mantener tu sesión activa.</li>
+            <li><strong>Solicitudes de API</strong> — necesarias para mostrar la agenda,
+                matricularte en talleres y sincronizar notificaciones.</li>
+        </ul>
+
+        <h2>4. Almacenamiento local</h2>
+        <p>
+            Para mejorar la experiencia y permitir el acceso sin conexión, la aplicación
+            guarda cierta información directamente en el dispositivo del usuario:
+        </p>
+        <ul>
+            <li>Caché de la agenda, talleres y materiales descargados.</li>
+            <li>Preferencias de la aplicación (idioma, tema, notificaciones).</li>
+            <li>Token de autenticación para evitar inicios de sesión repetidos.</li>
+        </ul>
+        <p>
+            Estos datos <strong>no salen del dispositivo</strong> y pueden eliminarse en
+            cualquier momento cerrando sesión o desinstalando la aplicación.
+        </p>
+
+        <h2>5. Permisos del dispositivo</h2>
+        <p>
+            La app solicita únicamente los permisos estrictamente necesarios para su
+            funcionamiento:
+        </p>
+        <ul>
+            <li><strong>Internet</strong>: para comunicarse con el servidor Moodle.</li>
+            <li><strong>Notificaciones</strong>: para avisarte de cambios en la agenda o
+                anuncios del evento (requiere autorización del usuario).</li>
+            <li><strong>Almacenamiento</strong>: para guardar materiales descargados de los
+                talleres (opcional).</li>
+            <li><strong>Cámara / Galería</strong>: únicamente si el usuario decide subir
+                archivos o fotos a una actividad del curso.</li>
+        </ul>
+
+        <h2>6. Notificaciones</h2>
+        <p>
+            Las notificaciones push se gestionan a través de los servicios oficiales del
+            sistema operativo (Firebase Cloud Messaging para Android y Apple Push
+            Notification Service para iOS). El contenido proviene del servidor Moodle del
+            evento y no se utiliza con fines promocionales de terceros.
+        </p>
+
+        <h2>7. Menores de edad</h2>
+        <p>
+            La aplicación está dirigida a los asistentes al evento MoodleMoot Ecuador 2026,
+            mayoritariamente profesionales de la educación y tecnología. En caso de ser
+            utilizada por menores de edad, se recomienda la supervisión de un tutor legal.
+        </p>
+
+        <h2>8. Derechos del usuario</h2>
+        <p>
+            Dado que los datos personales se almacenan en la plataforma Moodle del evento,
+            los derechos de acceso, rectificación, cancelación y oposición (ARCO) deben
+            ejercerse directamente contra el responsable de dicha plataforma. La aplicación
+            móvil no tiene capacidad para modificar ni eliminar datos en nombre del usuario
+            fuera de las funciones estándar de Moodle.
+        </p>
+
+        <h2>9. Cambios en esta política</h2>
+        <p>
+            Esta política puede actualizarse para reflejar mejoras en la aplicación o
+            cambios en la normativa aplicable. La versión vigente será siempre la
+            publicada en este documento, indicada con su fecha de última actualización.
+        </p>
+
+        <h2>10. Contacto</h2>
+        <p>
+            Si tienes preguntas sobre esta política o sobre el uso de la aplicación, puedes
+            ponerte en contacto con la organización del evento a través de los canales
+            oficiales del MoodleMoot Ecuador 2026.
+        </p>
+    </article>
+
+    <section class="card sponsors">
+        <h3>Organizado y patrocinado por</h3>
+        <div class="sponsors-grid">
+            <img src="../assets/img/moodlemoot/logo_moodle_moot_2026.svg" alt="MoodleMoot 2026">
+            <img src="../assets/img/moodlemoot/ecuador-2026.png" alt="Ecuador 2026">
+            <img src="../assets/img/moodlemoot/logo_exducere_white.svg" alt="Exducere" style="background: var(--primary); padding: 6px 10px; border-radius: 6px;">
+            <img src="../assets/img/moodlemoot/logo_puce_white.png" alt="PUCE" style="background: var(--primary); padding: 6px 10px; border-radius: 6px;">
+            <img src="../assets/img/moodlemoot/logo_reckoner.svg" alt="Reckoner">
+            <img src="../assets/img/moodlemoot/logo_qawana.svg" alt="Qawana">
+            <img src="../assets/img/moodlemoot/logo_datacurso.png" alt="DataCurso">
+            <img src="../assets/img/moodlemoot/logo_huawei_cloud.svg" alt="Huawei Cloud">
+        </div>
+    </section>
+</main>
+
+<footer>
+    <img src="../assets/img/moodlemoot/logl_moodle_moot_2026_white.svg" alt="MoodleMoot Ecuador 2026">
+    <p>&copy; 2026 MoodleMoot Ecuador. Todos los derechos reservados.</p>
+    <p>App basada en <a href="https://moodle.org/" target="_blank" rel="noopener">Moodle Mobile</a> · Versión 5.1.0</p>
+</footer>
+
+</body>
+</html>

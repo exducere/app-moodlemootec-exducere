@@ -1,0 +1,207 @@
+<ion-header collapsible>
+    <ion-toolbar class="moot-event-toolbar">
+        <ion-buttons slot="start">
+            <ion-back-button [text]="'core.back' | translate" />
+        </ion-buttons>
+        <ion-title>
+            @if (event) {
+                <h1>
+                    <core-format-text [text]="event.name" [contextLevel]="event.contextLevel" [contextInstanceId]="event.contextInstanceId"
+                        [sanitize]="event.offline" />
+                </h1>
+            }
+        </ion-title>
+        <ion-buttons slot="end">
+            <core-context-menu>
+                <core-context-menu-item [hidden]="!eventLoaded || (!hasOffline && event && !event.deleted) || !isOnline()" [priority]="400"
+                    [content]="'core.settings.synchronizenow' | translate" (action)="doRefresh(undefined, $event, true)"
+                    [iconAction]="syncIcon" [closeOnClick]="false" />
+                <core-context-menu-item [hidden]="!event || !event.canedit || event.deleted || (!canEdit && event.id > 0)" [priority]="300"
+                    [content]="'core.edit' | translate" (action)="openEdit()" iconAction="fas-pen" />
+                <core-context-menu-item [hidden]="!event || !event.candelete || event.deleted" [priority]="200"
+                    [content]="'core.delete' | translate" (action)="deleteEvent()" iconAction="due-trash-duotone" />
+                <core-context-menu-item [hidden]="!event || !event.deleted" [priority]="200" [content]="'core.restore' | translate"
+                    (action)="undoDelete()" iconAction="fas-rotate-left" />
+            </core-context-menu>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content [core-swipe-navigation]="events" class="moot-event-content">
+    <ion-refresher slot="fixed" [disabled]="!eventLoaded" (ionRefresh)="doRefresh($event.target)">
+        <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}" />
+    </ion-refresher>
+    <core-loading [hideUntil]="eventLoaded">
+        @if (event) {
+            <!-- Hero card -->
+            <section class="moot-event-hero">
+                <div class="moot-event-hero__icon" [class]="'addon-calendar-eventtype-' + event.eventtype">
+                    @if (event.moduleIcon) {
+                        <core-mod-icon [modicon]="event.moduleIcon" [showAlt]="false" [modname]="event.modulename"
+                            [componentId]="event.instance" [purpose]="event.purpose" [isBranded]="event.branded" />
+                    } @else if (event.eventIcon) {
+                        <ion-icon [name]="event.eventIcon" aria-hidden="true" />
+                    }
+                </div>
+                <div class="moot-event-hero__body">
+                    <span class="moot-event-chip">{{ 'addon.calendar.type' + event.formattedType | translate }}</span>
+                    <h2 class="moot-event-hero__title">
+                        <core-format-text [text]="event.name" [contextLevel]="event.contextLevel"
+                            [contextInstanceId]="event.contextInstanceId" [sanitize]="event.offline" />
+                    </h2>
+                </div>
+            </section>
+
+            <!-- Offline sync warning -->
+            @if (hasOffline || event.deleted) {
+                <div class="moot-event-alert">
+                    <ion-icon name="fas-triangle-exclamation" aria-hidden="true" />
+                    <span>{{ 'core.hasdatatosync' | translate:{$a: 'addon.calendar.calendarevent' | translate} }}</span>
+                </div>
+            }
+
+            <!-- Meta card -->
+            <section class="moot-event-card">
+                <div class="moot-event-meta">
+                    <div class="moot-event-meta__row">
+                        <ion-icon name="due-clock-duotone" aria-hidden="true" />
+                        <div class="moot-event-meta__body">
+                            <span class="moot-event-meta__label">{{ 'addon.calendar.when' | translate }}</span>
+                            <span class="moot-event-meta__value">
+                                <core-format-text [text]="event.formattedtime" [filter]="false" />
+                            </span>
+                            @if (event.deleted) {
+                                <span class="moot-event-meta__note">
+                                    <ion-icon name="due-trash-duotone" aria-hidden="true" /> {{ 'core.deletedoffline' | translate }}
+                                </span>
+                            }
+                        </div>
+                    </div>
+
+                    @if (courseName) {
+                        <a class="moot-event-meta__row moot-event-meta__row--link" [href]="courseUrl" core-link
+                            [capture]="true">
+                            <ion-icon name="fas-graduation-cap" aria-hidden="true" />
+                            <div class="moot-event-meta__body">
+                                <span class="moot-event-meta__label">{{ 'core.course' | translate }}</span>
+                                <span class="moot-event-meta__value">
+                                    <core-format-text [text]="courseName" contextLevel="course" [contextInstanceId]="courseId" />
+                                </span>
+                            </div>
+                            <ion-icon class="moot-event-meta__chev" name="fas-chevron-right" aria-hidden="true" />
+                        </a>
+                    }
+
+                    @if (groupName) {
+                        <div class="moot-event-meta__row">
+                            <ion-icon name="fas-users" aria-hidden="true" />
+                            <div class="moot-event-meta__body">
+                                <span class="moot-event-meta__label">{{ 'core.group' | translate }}</span>
+                                <span class="moot-event-meta__value">
+                                    <core-format-text [text]="groupName" contextLevel="course" [contextInstanceId]="event.courseid" />
+                                </span>
+                            </div>
+                        </div>
+                    }
+
+                    @if (categoryPath) {
+                        <div class="moot-event-meta__row">
+                            <ion-icon name="fas-folder-tree" aria-hidden="true" />
+                            <div class="moot-event-meta__body">
+                                <span class="moot-event-meta__label">{{ 'core.category' | translate }}</span>
+                                <span class="moot-event-meta__value">
+                                    <core-format-text [text]="categoryPath" contextLevel="coursecat"
+                                        [contextInstanceId]="event.categoryid" />
+                                </span>
+                            </div>
+                        </div>
+                    }
+
+                    @if (event.location) {
+                        <div class="moot-event-meta__row">
+                            <ion-icon name="due-location-dot-duotone" aria-hidden="true" />
+                            <div class="moot-event-meta__body">
+                                <span class="moot-event-meta__label">{{ 'core.location' | translate }}</span>
+                                <a class="moot-event-meta__value moot-event-meta__value--link" [href]="event.encodedLocation"
+                                    core-link [autoLogin]="false">
+                                    <core-format-text [text]="event.location" [contextLevel]="event.contextLevel"
+                                        [contextInstanceId]="event.contextInstanceId" [sanitize]="event.offline" />
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+
+            <!-- Description -->
+            @if (event.description) {
+                <section class="moot-event-card moot-event-description">
+                    <h3 class="moot-event-section-title">{{ 'core.description' | translate }}</h3>
+                    <div class="moot-event-description__body">
+                        <core-format-text [text]="event.description" [contextLevel]="event.contextLevel"
+                            [contextInstanceId]="event.contextInstanceId" [sanitize]="event.offline" />
+                    </div>
+                </section>
+            }
+
+            <!-- Go to activity -->
+            @if (moduleUrl) {
+                <div class="moot-event-action">
+                    <ion-button expand="block" [href]="moduleUrl" core-link [capture]="true" class="moot-event-action__btn">
+                        {{ 'addon.calendar.gotoactivity' | translate }}
+                    </ion-button>
+                </div>
+            }
+        }
+
+        @if (remindersEnabled && event) {
+            @if (!canScheduleExactAlarms && !scheduleExactWarningHidden) {
+                <section class="moot-event-card moot-event-warning">
+                    <div class="moot-event-warning__head">
+                        <ion-icon name="fas-circle-info" aria-hidden="true" />
+                        <div>
+                            <p class="moot-event-warning__title">{{ 'core.exactalarmsturnedoff' | translate }}</p>
+                            <p class="moot-event-warning__text">{{ 'core.exactalarmsturnedoffmessage' | translate }}</p>
+                        </div>
+                    </div>
+                    <div class="moot-event-warning__actions">
+                        <ion-button fill="clear" (click)="hideAlarmWarning()">
+                            {{ 'core.dontshowagain' | translate | coreNoPeriod }}
+                        </ion-button>
+                        <ion-button fill="outline" (click)="openAlarmSettings()">{{ 'core.turnon' | translate }}</ion-button>
+                    </div>
+                </section>
+            }
+
+            <section class="moot-event-card moot-event-reminders">
+                <div class="moot-event-reminders__head">
+                    <ion-icon name="due-bell-duotone" aria-hidden="true" />
+                    <h3 class="moot-event-section-title">{{ 'addon.calendar.reminders' | translate }}</h3>
+                </div>
+
+                <ng-container *ngFor="let reminder of reminders">
+                    @if (reminder.timestamp > 0) {
+                        <div class="moot-event-reminder" [class.is-past]="reminder.timestamp <= currentTime">
+                            <div class="moot-event-reminder__body">
+                                <span class="moot-event-reminder__label">{{ reminder.label }}</span>
+                                @if (reminder.sublabel) {
+                                    <span class="moot-event-reminder__sub">{{ reminder.sublabel }}</span>
+                                }
+                            </div>
+                            <ion-button fill="clear" (click)="deleteReminder(reminder.id, $event)"
+                                [ariaLabel]="'core.delete' | translate" class="moot-event-reminder__delete">
+                                <ion-icon name="due-trash-duotone" slot="icon-only" aria-hidden="true" />
+                            </ion-button>
+                        </div>
+                    }
+                </ng-container>
+
+                @if (event.timestart > currentTime) {
+                    <ion-button expand="block" (click)="addReminder()" class="moot-event-reminder__add">
+                        <ion-icon slot="start" name="fas-plus" aria-hidden="true" />
+                        {{ 'addon.calendar.setnewreminder' | translate }}
+                    </ion-button>
+                }
+            </section>
+        }
+    </core-loading>
+</ion-content>

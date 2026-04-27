@@ -1,0 +1,921 @@
+@use "theme/globals" as *;
+
+:host {
+
+
+    ion-list {
+        --background: var(--core-login-background);
+        --ion-item-background: var(--core-login-background);
+        --color: var(--core-login-text-color);
+    }
+
+    ion-item ion-label {
+        --color: var(--core-login-text-color);
+
+        p, h2, h3, .core-oauth-icon {
+            color: var(--color);
+        }
+    }
+
+    ion-button.core-button-as-link {
+        --color: var(--core-login-text-color);
+        text-decoration-color: var(--color);
+    }
+
+    .core-login-reconnect-warning {
+        margin: 0px 0px 32px 0px;
+    }
+
+    .core-login-info-box {
+        margin-bottom: 32px;
+
+        .core-login-site {
+            core-site-logo {
+                --core-site-logo-max-height: 104px;
+                --core-site-logo-sitename-margin-bottom: 8px;
+                --core-site-logo-sitename-font: var(--mdl-typography-subtitle-font-lg);
+
+                --core-site-logo-max-width: 300px;
+                --core-site-logo-width: 90%;
+                --core-site-logo-margin: 0 auto;
+            }
+
+            .core-siteurl {
+                margin-top: 8px;
+                margin-bottom: 0px;
+            }
+        }
+
+        .core-login-site + .core-login-user {
+            margin-top: 24px;
+        }
+    }
+
+    core-user-avatar.large-avatar {
+        --core-avatar-size: var(--core-large-avatar-size);
+    }
+
+    .core-login-fullname {
+        margin-top: 8px;
+        margin-bottom: 0px;
+    }
+
+    .core-login-methods {
+        form .item,
+        form .item ion-label {
+            --background: var(--core-login-input-background);
+            --color: var(--core-login-input-color);
+        }
+    }
+
+    ion-button {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .core-login-forgotten-password {
+        text-decoration: underline;
+    }
+
+    @if ($core-login-hide-forgot-password) {
+        .core-login-forgotten-password {
+            display: none;
+        }
+    }
+
+    @if ($core-fixed-url) {
+        .core-siteurl {
+            display: none;
+        }
+        core-site-logo {
+            --core-site-logo-sitename-display: none;
+        }
+    }
+
+    @if ($core-login-button-outline) {
+        form ion-button {
+            --background: white;
+            --color: var(--core-login-background);
+        }
+    }
+
+    @if ($core-login-loading-color) {
+        core-loading {
+            --loading-background: var(--core-login-background);
+            --loading-text-color: #{$core-login-loading-color};
+            --loading-spinner: #{$core-login-loading-color};
+        }
+    }
+
+    .core-login-methods-separator {
+        position: relative;
+        padding: 8px 0;
+
+        span {
+            background: var(--core-login-background);
+            padding: 0 8px;
+        }
+
+        &::before {
+            height: 1px;
+            position: absolute;
+            top: 50%;
+            left: 0px;
+            right: 0px;
+            border-bottom: 1px solid var(--gray-300);
+            content: "";
+            z-index: -1;
+        }
+    }
+
+
+    @if ($core-login-hide-qrcode) {
+        .core-login-site-qrcode,
+        .core-login-methods-separator {
+            display: none;
+        }
+    }
+
+    .core-login-login-button {
+        margin-top: 32px;
+    }
+
+
+
+
+    .core-login-login-inbrowser-button {
+        margin-bottom: 8px;
+    }
+
+    p.core-login-inbrowser {
+        font: var(--mdl-typography-body-font-sm);
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    .core-login-sign-up {
+        margin-top: 8px;
+        border-top: 1px solid var(--gray-300);
+    }
+
+    .core-login-identity-providers h2,
+    .core-login-sign-up h2 {
+        margin-top: 16px;
+        margin-bottom: 8px;
+        font: var(--mdl-typography-heading6-font);
+    }
+
+}
+
+// ─── MoodleMoot Ecuador 2026 palette ──────────────────────────────────────────
+$moot-blue:         #194866;
+$moot-orange:       #f98012;
+$moot-light-blue:   #65a1b3;
+$moot-peach:        #fedec3;
+$moot-medium-peach: #ffecdb;
+$moot-bright-blue:  #69e0ff;
+$moot-black:        #282828;
+$moot-light:        #ffffff;
+
+// Legacy aliases to keep existing selectors consistent with the unified palette.
+$moot-primary: $moot-blue;
+$moot-green:   $moot-light-blue;
+$moot-dark:    $moot-black;
+
+// ─── Main content background ──────────────────────────────────────────────────
+.mootec-login-content {
+    --background: #{$moot-primary};
+    position: relative;
+    overflow: hidden;
+}
+
+// ─── Decorative background shapes ────────────────────────────────────────────
+.mootec-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+}
+
+// Large teal filled circle – top-left, partially off-screen
+.shape-circle-tl {
+    width: 260px;
+    height: 260px;
+    background: $moot-green;
+    top: -80px;
+    left: -80px;
+    opacity: 0.55;
+
+    // Diagonal lines overlay via repeating-linear-gradient
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 6px,
+            rgba($moot-light, 0.18) 6px,
+            rgba($moot-light, 0.18) 8px
+        );
+    }
+}
+
+// Soft blob – top-right
+.shape-blob-tr {
+    width: 200px;
+    height: 180px;
+    background: rgba($moot-orange, 0.12);
+    top: -40px;
+    right: -40px;
+    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+}
+
+// Dashed orange ring – right side, mid-height
+.shape-dashed-ring {
+    width: 160px;
+    height: 160px;
+    border: 3px dashed $moot-orange;
+    background: transparent;
+    top: 30%;
+    right: -60px;
+    opacity: 0.6;
+}
+
+// Dark circle – bottom-right
+.shape-circle-br {
+    width: 220px;
+    height: 220px;
+    background: $moot-dark;
+    bottom: -70px;
+    right: -50px;
+    opacity: 0.7;
+}
+
+// Small accent dot – bottom-left
+.shape-accent-dot {
+    width: 80px;
+    height: 80px;
+    background: $moot-orange;
+    bottom: 120px;
+    left: -24px;
+    opacity: 0.5;
+}
+
+// ─── Main layout ──────────────────────────────────────────────────────────────
+.mootec-main {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px 40px;
+    gap: 0;
+}
+
+// ─── Header logo ──────────────────────────────────────────────────────────────
+.mootec-header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.mootec-logo {
+    height: 52px;
+    width: auto;
+    max-width: 240px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba($moot-dark, 0.3));
+}
+
+// ─── Hero image (Ecuador map in styled ring) ──────────────────────────────────
+.mootec-hero {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.mootec-image-outer-ring {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 4px solid $moot-orange;
+    padding: 6px;
+    background: rgba($moot-light, 0.08);
+    box-shadow:
+        0 0 0 2px rgba($moot-orange, 0.3),
+        0 8px 32px rgba($moot-dark, 0.4);
+}
+
+.mootec-image-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba($moot-light, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mootec-ecuador-map {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba($moot-orange, 0.5));
+}
+
+// Floating accent dots around hero image
+.mootec-float-dot {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.mootec-float-dot--orange {
+    width: 18px;
+    height: 18px;
+    background: $moot-orange;
+    top: 10px;
+    right: 16px;
+}
+
+.mootec-float-dot--green {
+    width: 12px;
+    height: 12px;
+    background: $moot-green;
+    bottom: 8px;
+    left: 24px;
+}
+
+// ─── Text ─────────────────────────────────────────────────────────────────────
+.mootec-text {
+    text-align: center;
+    margin-bottom: 36px;
+    padding: 0 8px;
+}
+
+.mootec-tagline {
+    color: $moot-light;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    line-height: 1.4;
+    letter-spacing: 0.2px;
+}
+
+.mootec-description {
+    color: rgba($moot-light, 0.75);
+    font-size: 13px;
+    font-weight: 400;
+    margin: 0 0 14px;
+    line-height: 1.5;
+}
+
+.mootec-date {
+    color: $moot-orange;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    letter-spacing: 0.3px;
+}
+
+.mootec-venue {
+    color: rgba($moot-light, 0.6);
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.2px;
+}
+
+// ─── CTA button ──────────────────────────────────────────────────────────────
+.mootec-cta {
+    width: 100%;
+    max-width: 320px;
+}
+
+.mootec-signin-btn {
+    --background: #{$moot-orange};
+    --background-activated: #{darken($moot-orange, 6%)};
+    --background-hover: #{lighten($moot-orange, 4%)};
+    --color: #{$moot-light};
+    --border-radius: 50px;
+    --box-shadow: 0 4px 20px rgba($moot-orange, 0.4);
+    font-weight: 700;
+    font-size: 16px;
+    height: 52px;
+    letter-spacing: 0.5px;
+}
+
+// ─── Modal ────────────────────────────────────────────────────────────────────
+ion-modal {
+    --height: auto;
+    --max-height: 92vh;
+}
+
+//// ─── Modal brand strip ────────────────────────────────────────────────────────
+.modal-brand-strip {
+    width: 100%;
+    padding: 16px 30px 16px;
+    display: flex;
+    height: 120px;
+    //justify-content: center;
+    align-items: center;
+}
+
+.modal-brand-logo {
+    height: 36px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+// ─── Login methods panel ──────────────────────────────────────────────────────
+.core-login-methods {
+    background: $moot-light;
+    min-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0;
+}
+
+// ─── Form fields ──────────────────────────────────────────────────────────────
+.core-login-form {
+    padding: 24px 20px 0;
+}
+
+.icon-password, .icon-user {
+    font-size: 20px;
+    color: $moot-primary;
+}
+
+.input-password, .input-username {
+    --border-radius: 10px;
+    --background: #{rgba($moot-primary, 0.06)};
+    --padding-start: 10px;
+    --color: #{$moot-dark};
+    --placeholder-color: #{rgba($moot-primary, 0.55)};
+    --highlight-color-focused: #{$moot-primary};
+}
+
+// ─── Buttons inside form ─────────────────────────────────────────────────────
+.forgotten-login-buttons {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 16px;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-setting-login {
+    width: 100%;
+    margin: 0;
+}
+
+.manual-login-btn {
+    --background: #{$moot-primary};
+    --background-activated: #{darken($moot-primary, 6%)};
+    --background-hover: #{lighten($moot-primary, 4%)};
+    --color: #{$moot-light};
+    --border-radius: 50px;
+    --box-shadow: 0 6px 18px rgba($moot-primary, 0.28);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.4px;
+    height: 52px;
+    text-transform: none;
+}
+
+// ─── Divider ─────────────────────────────────────────────────────────────────
+.content-divider-main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.login-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 16px 0;
+    width: 90%;
+
+    .divider-line {
+        flex: 1;
+        height: 1px;
+        background-color: rgba($moot-primary, 0.18);
+    }
+
+    .divider-text {
+        font-size: 12px;
+        color: rgba($moot-primary, 0.55);
+        white-space: nowrap;
+        font-weight: 500;
+    }
+}
+
+// ─── Alternative login methods ────────────────────────────────────────────────
+.content-main-login {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin-top: 4px;
+}
+
+.alternative-login-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 0;
+    width: 90%;
+}
+
+.alt-login-btn {
+    flex: 1;
+    height: 80px;
+    border-radius: 10px;
+    border: 1.5px solid rgba($moot-primary, 0.18);
+    background: rgba($moot-primary, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: none;
+
+    &:hover {
+        background: rgba($moot-primary, 0.06);
+        border-color: rgba($moot-primary, 0.28);
+    }
+
+    &:active {
+        background: rgba($moot-primary, 0.12);
+        border-color: $moot-primary;
+    }
+
+    ion-icon {
+        font-size: 28px;
+        color: $moot-primary;
+    }
+
+    span {
+        font-size: 10px;
+        font-weight: 600;
+        color: $moot-primary;
+    }
+}
+
+:host-context(:root.dark) {
+    @if ($core-login-button-outline-dark) {
+        form ion-button {
+            --background: white;
+            --color: var(--core-login-background-dark);
+        }
+    }
+
+    @if ($core-login-loading-color-dark) {
+        core-loading {
+            --loading-background: var(--core-login-background-dark);
+            --loading-text-color: #{$core-login-loading-color-dark};
+            --loading-spinner: #{$core-login-loading-color-dark};
+        }
+    }
+}
+
+// ─── OTP Flow Styles ──────────────────────────────────────────────────────────
+.otp-phone-container,
+.otp-code-container {
+    background: $moot-light;
+    padding: 40px 20px;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.otp-phone-header,
+.otp-code-header {
+    text-align: center;
+    margin-bottom: 30px;
+
+    h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: $moot-primary;
+        margin-bottom: 8px;
+    }
+
+    p {
+        font-size: 14px;
+        color: rgba($moot-primary, 0.65);
+        margin: 0;
+    }
+}
+
+.otp-phone-input-wrapper {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+
+    ion-item {
+        --background: #{rgba($moot-primary, 0.06)};
+        --border-radius: 10px;
+        --padding-start: 15px;
+        border-radius: 10px;
+    }
+
+    .otp-phone-input {
+        --color: #{$moot-dark};
+        --placeholder-color: #{rgba($moot-primary, 0.55)};
+    }
+
+    ion-icon {
+        color: $moot-primary;
+        font-size: 20px;
+        margin-right: 10px;
+    }
+}
+
+.otp-phone-buttons,
+.otp-code-buttons {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.otp-submit-btn,
+.otp-access-btn {
+    --background: #{$moot-primary};
+    --color: #{$moot-light};
+    --border-radius: 50px;
+    height: 48px;
+    font-weight: 600;
+    text-transform: none;
+}
+
+.otp-cancel-btn {
+    --color: #{$moot-primary};
+    --border-color: #{$moot-primary};
+    --border-radius: 50px;
+    height: 48px;
+    font-weight: 600;
+    text-transform: none;
+}
+
+// OTP Loading
+.otp-loading-container {
+    background: $moot-light;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    ion-spinner {
+        width: 60px;
+        height: 60px;
+        --color: #{$moot-primary};
+    }
+
+    p {
+        font-size: 16px;
+        color: rgba($moot-primary, 0.65);
+        margin: 0;
+    }
+}
+
+// OTP Success
+.otp-success-container {
+    background: $moot-light;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+    .success-icon {
+        font-size: 80px;
+        color: $moot-green;
+    }
+
+    h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: $moot-primary;
+        margin: 0;
+    }
+}
+
+// OTP Code Inputs
+.otp-code-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.otp-input {
+    width: 50px;
+    height: 60px;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    border: 2px solid rgba($moot-primary, 0.15);
+    border-radius: 10px;
+    background: rgba($moot-primary, 0.06);
+    color: $moot-primary;
+    transition: all 0.3s ease;
+
+    &:focus {
+        outline: none;
+        border-color: $moot-orange;
+        background: $moot-light;
+        box-shadow: 0 0 0 3px rgba($moot-orange, 0.15);
+    }
+
+    &:not(:placeholder-shown) {
+        border-color: $moot-primary;
+        background: $moot-light;
+    }
+}
+
+@media (min-width: 400px) {
+    .otp-input {
+        width: 55px;
+        height: 65px;
+        font-size: 26px;
+    }
+}
+
+// General other-form container
+.other-form {
+    min-height: 50vh;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ANIMATIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ─── Keyframes ────────────────────────────────────────────────────────────────
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.75); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-8px); }
+}
+
+@keyframes pulseSlow {
+    0%, 100% { transform: scale(1);    opacity: inherit; }
+    50%       { transform: scale(1.06); opacity: 0.85; }
+}
+
+@keyframes rotateSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+@keyframes drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(8px, -6px) scale(1.04); }
+    66%       { transform: translate(-4px, 8px) scale(0.97); }
+}
+
+@keyframes bounceSlow {
+    0%, 100% { transform: translateY(0) scale(1); }
+    40%       { transform: translateY(-12px) scale(1.1); }
+    60%       { transform: translateY(-8px) scale(1.05); }
+}
+
+@keyframes ringGlow {
+    0%, 100% { box-shadow: 0 0 0 2px rgba($moot-orange, 0.3), 0 8px 32px rgba($moot-dark, 0.4); }
+    50%       { box-shadow: 0 0 0 6px rgba($moot-orange, 0.5), 0 8px 40px rgba($moot-dark, 0.5); }
+}
+
+@keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modalStripIn {
+    from { opacity: 0; transform: scaleX(0.92); }
+    to   { opacity: 1; transform: scaleX(1); }
+}
+
+// ─── Entrance: main screen ────────────────────────────────────────────────────
+
+.anim-fade-down {
+    animation: fadeDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.anim-fade-up {
+    animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.anim-scale-in {
+    animation: scaleIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+// ─── Stagger delays ───────────────────────────────────────────────────────────
+
+.anim-delay-1 { animation-delay: 0.12s; }
+.anim-delay-2 { animation-delay: 0.24s; }
+.anim-delay-3 { animation-delay: 0.36s; }
+.anim-delay-4 { animation-delay: 0.48s; }
+.anim-delay-5 { animation-delay: 0.60s; }
+.anim-delay-6 { animation-delay: 0.72s; }
+
+// ─── Continuous: shapes ──────────────────────────────────────────────────────
+
+.anim-pulse-slow {
+    animation: pulseSlow 6s ease-in-out infinite;
+}
+
+.anim-rotate {
+    animation: rotateSlow 18s linear infinite;
+    transform-origin: center;
+}
+
+.anim-drift {
+    animation: drift 9s ease-in-out infinite;
+}
+
+.anim-bounce-slow {
+    animation: bounceSlow 4s ease-in-out infinite;
+}
+
+// ─── Continuous: hero ────────────────────────────────────────────────────────
+
+.anim-float {
+    animation: float 3.5s ease-in-out infinite;
+}
+
+.anim-ring-glow {
+    animation: ringGlow 3s ease-in-out infinite;
+}
+
+// ─── Modal entrance ──────────────────────────────────────────────────────────
+
+.modal-anim-strip {
+    animation: modalStripIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.modal-anim-item {
+    animation: modalSlideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.modal-anim-delay-1 { animation-delay: 0.08s; }
+.modal-anim-delay-2 { animation-delay: 0.16s; }
+.modal-anim-delay-3 { animation-delay: 0.24s; }
+.modal-anim-delay-4 { animation-delay: 0.32s; }
+.modal-anim-delay-5 { animation-delay: 0.40s; }
+
+// ─── Respeta prefers-reduced-motion ──────────────────────────────────────────
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}

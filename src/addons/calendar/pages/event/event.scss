@@ -1,0 +1,377 @@
+// ─── Moodle Moot Ecuador palette ──────────────────────────────────────────────
+$moot-blue:         #194866;
+$moot-orange:       #f98012;
+$moot-black:        #282828;
+$moot-light-blue:   #65a1b3;
+$moot-peach:        #fedec3;
+$moot-medium-peach: #ffecdb;
+$moot-bright-blue:  #69e0ff;
+$moot-muted:        #6b7280;
+$moot-line:         rgba($moot-blue, 0.10);
+
+:host {
+    ion-card ion-note {
+        font-size: 1.6rem;
+    }
+
+    // ─── Toolbar ──────────────────────────────────────────────────────────
+    .moot-event-toolbar {
+        --background: #{$moot-blue};
+        --color: #ffffff;
+        --border-color: transparent;
+
+        ion-button {
+            --color: #ffffff;
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+    }
+
+    // ─── Content background ───────────────────────────────────────────────
+    .moot-event-content {
+        --background: #ffffff;
+    }
+
+    // ─── Hero ─────────────────────────────────────────────────────────────
+    .moot-event-hero {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 20px 16px;
+        background: #ffffff;
+
+        &__icon {
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+            border-radius: 18px;
+            background: $moot-medium-peach;
+            color: $moot-blue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            ion-icon {
+                font-size: 26px;
+                color: $moot-blue;
+            }
+
+            core-mod-icon {
+                --size: 36px;
+                width: 36px;
+                height: 36px;
+            }
+        }
+
+        &__body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        &__title {
+            margin: 6px 0 0;
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.25;
+            color: $moot-black;
+        }
+    }
+
+    .moot-event-chip {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba($moot-blue, 0.08);
+        color: $moot-blue;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    // ─── Offline / alert banner ───────────────────────────────────────────
+    .moot-event-alert {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 16px 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba($moot-orange, 0.12);
+        color: darken($moot-orange, 8%);
+        font-size: 13px;
+        font-weight: 600;
+
+        ion-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+    }
+
+    // ─── Card primitive ───────────────────────────────────────────────────
+    .moot-event-card {
+        margin: 0 16px 14px;
+        padding: 16px;
+        background: #ffffff;
+        border: 1px solid $moot-line;
+        border-radius: 16px;
+    }
+
+    .moot-event-section-title {
+        margin: 0 0 10px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: $moot-blue;
+    }
+
+    // ─── Meta rows ────────────────────────────────────────────────────────
+    .moot-event-meta {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .moot-event-meta__row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid $moot-line;
+        color: inherit;
+        text-decoration: none;
+
+        &:first-child {
+            padding-top: 0;
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        > ion-icon {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba($moot-light-blue, 0.18);
+            color: $moot-blue;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &--link {
+            cursor: pointer;
+
+            &:hover, &:focus {
+                background: rgba($moot-blue, 0.03);
+            }
+        }
+    }
+
+    .moot-event-meta__body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .moot-event-meta__label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: $moot-muted;
+    }
+
+    .moot-event-meta__value {
+        font-size: 14px;
+        font-weight: 600;
+        color: $moot-black;
+        line-height: 1.4;
+        word-break: break-word;
+
+        &--link {
+            color: $moot-blue;
+            text-decoration: none;
+        }
+    }
+
+    .moot-event-meta__note {
+        font-size: 12px;
+        color: $moot-orange;
+        font-weight: 600;
+        margin-top: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+
+        ion-icon {
+            font-size: 12px;
+        }
+    }
+
+    .moot-event-meta__chev {
+        align-self: center;
+        font-size: 12px;
+        color: $moot-muted;
+        background: transparent !important;
+        width: auto !important;
+        height: auto !important;
+    }
+
+    // ─── Description ──────────────────────────────────────────────────────
+    .moot-event-description__body {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #374151;
+    }
+
+    // ─── Action CTA ───────────────────────────────────────────────────────
+    .moot-event-action {
+        padding: 4px 16px 16px;
+    }
+
+    .moot-event-action__btn {
+        --background: #{$moot-blue};
+        --background-activated: #{darken($moot-blue, 6%)};
+        --color: #ffffff;
+        --border-radius: 14px;
+        --box-shadow: 0 4px 14px rgba($moot-blue, 0.25);
+        height: 48px;
+        font-weight: 700;
+        text-transform: none;
+        margin: 0;
+    }
+
+    // ─── Warning (alarms) ─────────────────────────────────────────────────
+    .moot-event-warning {
+        background: rgba($moot-orange, 0.08);
+        border-color: rgba($moot-orange, 0.25);
+
+        &__head {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-bottom: 8px;
+
+            ion-icon {
+                font-size: 18px;
+                color: $moot-orange;
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+        }
+
+        &__title {
+            margin: 0 0 4px;
+            font-size: 14px;
+            font-weight: 700;
+            color: $moot-black;
+        }
+
+        &__text {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: $moot-muted;
+        }
+
+        &__actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+            margin-top: 8px;
+
+            ion-button {
+                --color: #{$moot-orange};
+                --border-color: #{$moot-orange};
+                text-transform: none;
+                font-weight: 600;
+                font-size: 13px;
+                margin: 0;
+            }
+        }
+    }
+
+    // ─── Reminders ────────────────────────────────────────────────────────
+    .moot-event-reminders {
+        &__head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+
+            ion-icon {
+                font-size: 18px;
+                color: $moot-blue;
+            }
+
+            .moot-event-section-title {
+                margin: 0;
+            }
+        }
+    }
+
+    .moot-event-reminder {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 0;
+        border-top: 1px solid $moot-line;
+
+        &.is-past {
+            opacity: 0.55;
+        }
+
+        &__body {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        &__label {
+            font-size: 14px;
+            font-weight: 600;
+            color: $moot-black;
+        }
+
+        &__sub {
+            font-size: 12px;
+            color: $moot-muted;
+        }
+
+        &__delete {
+            --color: #c1121f;
+            margin: 0;
+            --padding-start: 6px;
+            --padding-end: 6px;
+        }
+
+        &__add {
+            --background: transparent;
+            --background-activated: #{rgba($moot-orange, 0.12)};
+            --color: #{$moot-orange};
+            --border-color: #{$moot-orange};
+            --border-width: 1.5px;
+            --border-style: solid;
+            --border-radius: 14px;
+            --box-shadow: none;
+            margin-top: 12px;
+            height: 46px;
+            font-weight: 700;
+            text-transform: none;
+        }
+    }
+}

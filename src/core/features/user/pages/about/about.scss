@@ -1,0 +1,721 @@
+$moot-blue: #194866;
+$moot-orange: #f98012;
+$moot-black: #282828;
+$moot-light-blue: #65a1b3;
+$moot-peach: #fedec3;
+$moot-medium-peach: #ffecdb;
+$moot-bright-blue: #69e0ff;
+
+:host {
+    --moot-profile-bg: #f6f8fa;
+
+    .moot-profile-toolbar {
+        --background: #{$moot-blue};
+        --color: #ffffff;
+        --border-width: 0;
+
+        h1 {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        ion-back-button,
+        ion-buttons {
+            --color: #ffffff;
+        }
+    }
+
+    .moot-profile-content {
+        --background: var(--moot-profile-bg);
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --padding-top: 0;
+        --padding-bottom: 24px;
+    }
+
+    // HERO
+    .moot-profile-hero {
+        position: relative;
+        padding: 32px 16px 24px;
+        margin: 0 -16px 16px;
+        background: linear-gradient(180deg, $moot-blue 0%, $moot-blue 55%, transparent 55%, transparent 100%);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .moot-profile-avatar-wrapper {
+        width: 128px;
+        height: 128px;
+        border-radius: 50%;
+        background: #ffffff;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 24px rgba(25, 72, 102, 0.25);
+        position: relative;
+    }
+
+    .moot-profile-avatar {
+        --core-avatar-size: 120px;
+        --core-avatar-radius: 50%;
+        --margin-end-on-item: 0;
+        --margin-vertical-on-item: 0;
+        width: 120px;
+        height: 120px;
+        display: block;
+    }
+
+    .moot-profile-avatar-edit {
+        position: absolute;
+        right: -4px;
+        bottom: -4px;
+        --background: #{$moot-orange};
+        --color: #ffffff;
+        --border-radius: 50%;
+        --padding-start: 8px;
+        --padding-end: 8px;
+        --padding-top: 8px;
+        --padding-bottom: 8px;
+        margin: 0;
+        box-shadow: 0 4px 10px rgba(249, 128, 18, 0.4);
+
+        &::part(native) {
+            border-radius: 50%;
+            background: $moot-orange;
+        }
+
+        ion-icon {
+            color: #ffffff;
+            font-size: 14px;
+        }
+    }
+
+    .moot-profile-name {
+        margin: 20px 0 4px;
+        color: $moot-black;
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .moot-profile-username {
+        margin: 0;
+        color: $moot-light-blue;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    // QUICK ACTIONS GRID
+    .moot-profile-quick {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .moot-profile-quick-tile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        padding: 14px 8px;
+        background: #ffffff;
+        border: 1px solid rgba(25, 72, 102, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(25, 72, 102, 0.04);
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        min-height: 100px;
+
+        &:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 4px rgba(25, 72, 102, 0.08);
+        }
+    }
+
+    .moot-profile-quick-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        background: $moot-blue;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+            color: #ffffff !important;
+            font-size: 22px;
+        }
+    }
+
+    .moot-profile-quick-label {
+        color: $moot-black;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    // CARDS
+    .moot-profile-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 18px 18px 6px;
+        margin-bottom: 14px;
+        border: 1px solid rgba(25, 72, 102, 0.08);
+        box-shadow: 0 2px 8px rgba(25, 72, 102, 0.04);
+
+        &.moot-profile-about {
+            padding-bottom: 18px;
+        }
+    }
+
+    .moot-profile-section-title {
+        margin: 0 0 14px;
+        color: $moot-blue;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .moot-profile-description {
+        color: $moot-black;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    // LIST
+    .moot-profile-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .moot-profile-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(25, 72, 102, 0.08);
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .moot-profile-row-icon {
+        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: $moot-medium-peach;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+            color: $moot-orange;
+            font-size: 18px;
+        }
+    }
+
+    .moot-profile-row-body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .moot-profile-row-label {
+        color: $moot-light-blue;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .moot-profile-row-value {
+        color: $moot-black;
+        font-size: 15px;
+        font-weight: 500;
+        word-break: break-word;
+
+        &[href] {
+            color: $moot-blue;
+            text-decoration: none;
+        }
+    }
+
+    // INTERESTS
+    .moot-profile-interests {
+        padding: 4px 0 14px;
+
+        .moot-profile-row-label {
+            display: block;
+            margin-bottom: 10px;
+        }
+    }
+
+    .moot-profile-interests-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .moot-profile-chip {
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: $moot-peach;
+        border: none;
+        color: $moot-orange;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:active {
+            background: darken($moot-peach, 4%);
+        }
+    }
+
+    // ENROLLED WORKSHOPS
+    .moot-profile-workshops {
+        margin-bottom: 14px;
+    }
+
+    .moot-profile-workshops-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 4px 10px;
+    }
+
+    .moot-profile-workshops-count {
+        background: $moot-orange;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 999px;
+    }
+
+    .moot-profile-workshop-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .moot-profile-workshop-card {
+        width: 100%;
+        display: flex;
+        align-items: stretch;
+        gap: 14px;
+        padding: 12px;
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid rgba(25, 72, 102, 0.08);
+        box-shadow: 0 2px 8px rgba(25, 72, 102, 0.05);
+        text-align: start;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+
+        &:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 4px rgba(25, 72, 102, 0.08);
+        }
+    }
+
+    .moot-profile-workshop-cover {
+        flex-shrink: 0;
+        width: 72px;
+        height: 72px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: $moot-medium-peach;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+            color: $moot-orange;
+            font-size: 28px;
+        }
+    }
+
+    .moot-profile-workshop-cover-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .moot-profile-workshop-info {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .moot-profile-workshop-tag {
+        align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        background: rgba(249, 128, 18, 0.12);
+        color: $moot-orange;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 999px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+
+        ion-icon {
+            font-size: 11px;
+        }
+    }
+
+    .moot-profile-workshop-title {
+        margin: 2px 0 0;
+        color: $moot-black;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .moot-profile-workshop-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 4px;
+    }
+
+    .moot-profile-workshop-meta-row {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: $moot-light-blue;
+        font-size: 12px;
+        font-weight: 500;
+
+        ion-icon {
+            font-size: 12px;
+        }
+    }
+
+    .moot-profile-workshop-chevron {
+        align-self: center;
+        color: $moot-light-blue;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .moot-profile-workshops-empty {
+        padding: 22px 16px;
+        text-align: center;
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px dashed rgba(25, 72, 102, 0.18);
+        color: $moot-light-blue;
+
+        ion-icon {
+            font-size: 32px;
+            color: $moot-light-blue;
+            margin-bottom: 6px;
+        }
+
+        p {
+            margin: 0;
+            font-size: 13px;
+        }
+    }
+
+    .moot-profile-workshop-skeleton {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .moot-profile-workshop-skeleton-row {
+        height: 96px;
+        border-radius: 16px;
+        background: linear-gradient(90deg,
+            rgba(25, 72, 102, 0.05) 25%,
+            rgba(25, 72, 102, 0.1) 37%,
+            rgba(25, 72, 102, 0.05) 63%);
+        background-size: 400% 100%;
+        animation: moot-profile-shimmer 1.3s ease-in-out infinite;
+    }
+
+    @keyframes moot-profile-shimmer {
+        0% { background-position: 100% 0; }
+        100% { background-position: 0 0; }
+    }
+
+}
+
+// Floating dialog modal — must live outside :host because ion-modal is
+// teleported to the app overlay outlet, so scoped selectors can't reach it.
+ion-modal#moot-profile-qr-modal {
+    --width: 88%;
+    --max-width: 360px;
+    --min-width: 280px;
+    --height: fit-content;
+    --border-radius: 24px;
+    --background: #{$moot-blue};
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.35);
+    --backdrop-opacity: 0.55;
+
+    &::part(content) {
+        background: $moot-blue;
+    }
+
+    .moot-profile-qr-dialog {
+        padding: 20px 22px 22px;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .moot-profile-qr-header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 16px;
+
+        h2 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+    }
+
+    .moot-profile-qr-close {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255, 255, 255, 0.7);
+        background: transparent;
+        color: #ffffff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        ion-icon {
+            font-size: 14px;
+        }
+
+        &:active {
+            background: rgba(255, 255, 255, 0.15);
+        }
+    }
+
+    .moot-profile-qr-card {
+        width: 100%;
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .moot-profile-qr-image {
+        width: 100%;
+        max-width: 240px;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        display: block;
+    }
+
+    .moot-profile-qr-code {
+        margin: 14px 0 4px;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        text-align: center;
+        word-break: break-all;
+    }
+
+    .moot-profile-qr-actions {
+        width: 100%;
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .moot-profile-qr-action {
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 12px;
+        background: #ffffff;
+        color: $moot-blue;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+
+        ion-icon {
+            font-size: 16px;
+            color: $moot-blue;
+        }
+
+        &:active {
+            background: #{$moot-medium-peach};
+        }
+    }
+}
+
+ion-modal#moot-profile-scan-modal {
+    --width: 92%;
+    --max-width: 400px;
+    --min-width: 300px;
+    --height: auto;
+    --max-height: 82%;
+    --border-radius: 24px;
+    --background: #ffffff;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.35);
+    --backdrop-opacity: 0.55;
+
+    .moot-profile-scan-dialog {
+        padding: 18px 20px 22px;
+        display: flex;
+        flex-direction: column;
+        max-height: 82vh;
+        overflow: hidden;
+    }
+
+    .moot-profile-scan-header {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+
+        h2 {
+            margin: 0;
+            color: $moot-blue;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .moot-profile-qr-close {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(25, 72, 102, 0.25);
+            background: transparent;
+            color: $moot-blue;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+
+            ion-icon {
+                font-size: 14px;
+            }
+        }
+    }
+
+    .moot-profile-scan-body {
+        flex: 1;
+        overflow-y: auto;
+        text-align: center;
+        padding-bottom: 6px;
+    }
+
+    .moot-profile-scan-avatar {
+        --core-avatar-size: 96px;
+        --core-avatar-radius: 50%;
+        display: inline-block;
+        margin: 8px auto 12px;
+    }
+
+    .moot-profile-scan-name {
+        margin: 0 0 4px;
+        color: $moot-black;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .moot-profile-scan-email {
+        margin: 0 0 16px;
+        color: $moot-light-blue;
+        font-size: 14px;
+    }
+
+    .moot-profile-scan-list {
+        text-align: start;
+        margin-top: 8px;
+        padding: 4px 4px 0;
+        border-top: 1px solid rgba(25, 72, 102, 0.08);
+    }
+
+    .moot-profile-scan-footer {
+        margin-top: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .moot-profile-scan-primary {
+        --background: #{$moot-orange};
+        --background-hover: #{darken($moot-orange, 6%)};
+        --color: #ffffff;
+        --border-radius: 12px;
+        --box-shadow: 0 4px 12px rgba(249, 128, 18, 0.3);
+        font-weight: 600;
+
+        &[disabled] {
+            --background: #{lighten($moot-orange, 20%)};
+            --box-shadow: none;
+        }
+    }
+
+    .moot-profile-scan-secondary {
+        --border-color: #{$moot-blue};
+        --color: #{$moot-blue};
+        --border-radius: 12px;
+        font-weight: 600;
+    }
+}
+
+:host-context([dir="rtl"]) {
+    .moot-profile-avatar-edit {
+        right: auto;
+        left: -4px;
+    }
+}
