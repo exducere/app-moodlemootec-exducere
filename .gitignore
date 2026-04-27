@@ -9,6 +9,11 @@
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
 
+.agent/rules
+.claude
+.windsurf
+CLAUDE.md
+
 *.log
 log.txt
 
