@@ -420,36 +420,31 @@ $moot-dark:    $moot-black;
 
 // ─── Modal ────────────────────────────────────────────────────────────────────
 ion-modal {
-    --height: auto;
-    --max-height: 92vh;
+    --border-radius: 28px 28px 0 0;
 }
 
-//// ─── Modal brand strip ────────────────────────────────────────────────────────
+// ─── Modal brand strip ────────────────────────────────────────────────────────
 .modal-brand-strip {
     width: 100%;
-    padding: 16px 30px 16px;
+    padding: 20px 24px 12px;
     display: flex;
-    height: 120px;
-    //justify-content: center;
     align-items: center;
 }
 
 .modal-brand-logo {
-    height: 36px;
+    height: 32px;
     width: auto;
-    max-width: 200px;
+    max-width: 180px;
     object-fit: contain;
 }
 
 // ─── Login methods panel ──────────────────────────────────────────────────────
 .core-login-methods {
     background: $moot-light;
-    min-height: 80vh;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 0;
+    padding-bottom: 16px;
 }
 
 // ─── Form fields ──────────────────────────────────────────────────────────────
@@ -463,12 +458,14 @@ ion-modal {
 }
 
 .input-password, .input-username {
-    --border-radius: 10px;
+    --border-radius: 50px;
     --background: #{rgba($moot-primary, 0.06)};
-    --padding-start: 10px;
+    --padding-start: 18px;
+    --padding-end: 18px;
     --color: #{$moot-dark};
     --placeholder-color: #{rgba($moot-primary, 0.55)};
     --highlight-color-focused: #{$moot-primary};
+    --min-height: 52px;
 }
 
 // ─── Buttons inside form ─────────────────────────────────────────────────────
@@ -501,6 +498,142 @@ ion-modal {
     text-transform: none;
 }
 
+// ─── Cédula form ─────────────────────────────────────────────────────────────
+.cedula-form {
+    padding: 0 20px 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cedula-input-item {
+    --background: #{rgba($moot-primary, 0.06)};
+    --border-radius: 50px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    --min-height: 52px;
+    border-radius: 50px;
+    overflow: hidden;
+
+    ion-icon {
+        color: $moot-primary;
+        font-size: 20px;
+        margin-right: 8px;
+    }
+
+    ion-input {
+        --color: #{$moot-dark};
+        --placeholder-color: #{rgba($moot-primary, 0.5)};
+        font-size: 15px;
+    }
+}
+
+.cedula-submit-btn {
+    --background: #{$moot-orange};
+    --background-activated: #{darken($moot-orange, 6%)};
+    --background-hover: #{lighten($moot-orange, 4%)};
+    --color: #{$moot-light};
+    --border-radius: 50px;
+    --box-shadow: 0 4px 16px rgba($moot-orange, 0.35);
+    font-weight: 700;
+    font-size: 15px;
+    height: 52px;
+    letter-spacing: 0.4px;
+    text-transform: none;
+    margin: 0;
+}
+
+// ─── Grid de opciones alternativas ───────────────────────────────────────────
+.login-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 8px 20px 16px;
+}
+
+.login-option-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 14px 8px;
+    border-radius: 16px;
+    border: 1.5px solid rgba($moot-primary, 0.14);
+    background: rgba($moot-primary, 0.03);
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
+
+    &__icon {
+        font-size: 22px;
+        color: $moot-orange;
+    }
+
+    &__label {
+        font-size: 11px;
+        font-weight: 600;
+        color: $moot-primary;
+        text-align: center;
+        line-height: 1.35;
+    }
+
+    &:active {
+        background: rgba($moot-primary, 0.08);
+        border-color: rgba($moot-primary, 0.3);
+        transform: scale(0.97);
+    }
+}
+
+// ─── Password form ────────────────────────────────────────────────────────────
+.password-form-container {
+    align-items: stretch;
+}
+
+.password-form-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 20px;
+
+    h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: $moot-primary;
+        margin: 0;
+    }
+}
+
+.password-back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid rgba($moot-primary, 0.18);
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease;
+
+    ion-icon {
+        font-size: 18px;
+        color: $moot-primary;
+    }
+
+    &:active {
+        background: rgba($moot-primary, 0.08);
+    }
+}
+
+.password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
 // ─── Divider ─────────────────────────────────────────────────────────────────
 .content-divider-main {
     width: 100%;
@@ -513,7 +646,7 @@ ion-modal {
     align-items: center;
     justify-content: center;
     gap: 12px;
-    margin: 16px 0;
+    margin: 12px 0;
     width: 90%;
 
     .divider-line {
@@ -535,52 +668,90 @@ ion-modal {
     width: 100%;
     display: flex;
     justify-content: center;
-    padding: 0;
-    margin-top: 4px;
-}
-
-.alternative-login-container {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    padding: 0;
-    width: 90%;
+    padding: 0 20px;
+    margin-top: 0;
+    margin-bottom: 8px;
+    box-sizing: border-box;
 }
 
 .alt-login-btn {
-    flex: 1;
-    height: 80px;
-    border-radius: 10px;
+    width: 100%;
+    height: 64px;
+    padding: 0 16px 0 12px;
+    border-radius: 50px;
     border: 1.5px solid rgba($moot-primary, 0.18);
-    background: rgba($moot-primary, 0.04);
+    background: $moot-light;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
-    gap: 8px;
+    gap: 14px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    box-shadow: 0 2px 10px rgba($moot-primary, 0.06);
 
     &:hover {
-        background: rgba($moot-primary, 0.06);
-        border-color: rgba($moot-primary, 0.28);
+        background: rgba($moot-primary, 0.03);
+        border-color: rgba($moot-primary, 0.32);
+        box-shadow: 0 4px 14px rgba($moot-primary, 0.1);
     }
 
     &:active {
-        background: rgba($moot-primary, 0.12);
+        transform: scale(0.98);
+        background: rgba($moot-primary, 0.06);
         border-color: $moot-primary;
     }
 
-    ion-icon {
-        font-size: 28px;
-        color: $moot-primary;
+    &__icon-wrap {
+        flex: 0 0 auto;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba($moot-orange, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+            font-size: 22px;
+            color: $moot-orange;
+        }
     }
 
-    span {
-        font-size: 10px;
-        font-weight: 600;
+    &__text {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        min-width: 0;
+        text-align: left;
+    }
+
+    &__title {
+        font-size: 14px;
+        font-weight: 700;
         color: $moot-primary;
+        letter-spacing: 0.2px;
+        line-height: 1.2;
+    }
+
+    &__subtitle {
+        font-size: 11px;
+        font-weight: 400;
+        color: rgba($moot-primary, 0.6);
+        line-height: 1.2;
+    }
+
+    &__arrow {
+        flex: 0 0 auto;
+        font-size: 22px;
+        color: rgba($moot-primary, 0.55);
+        transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    &:hover &__arrow {
+        color: $moot-primary;
+        transform: translateX(2px);
     }
 }
 
@@ -605,28 +776,29 @@ ion-modal {
 .otp-phone-container,
 .otp-code-container {
     background: $moot-light;
-    padding: 40px 20px;
-    min-height: 60vh;
+    padding: 24px 20px 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
 .otp-phone-header,
 .otp-code-header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    width: 100%;
 
     h2 {
-        font-size: 24px;
-        font-weight: 600;
+        font-size: 20px;
+        font-weight: 700;
         color: $moot-primary;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+        margin-top: 0;
     }
 
     p {
-        font-size: 14px;
+        font-size: 13px;
         color: rgba($moot-primary, 0.65);
         margin: 0;
     }
@@ -639,9 +811,12 @@ ion-modal {
 
     ion-item {
         --background: #{rgba($moot-primary, 0.06)};
-        --border-radius: 10px;
-        --padding-start: 15px;
-        border-radius: 10px;
+        --border-radius: 50px;
+        --padding-start: 20px;
+        --padding-end: 20px;
+        --min-height: 52px;
+        border-radius: 50px;
+        overflow: hidden;
     }
 
     .otp-phone-input {
@@ -688,7 +863,7 @@ ion-modal {
 // OTP Loading
 .otp-loading-container {
     background: $moot-light;
-    min-height: 60vh;
+    padding: 48px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -696,13 +871,13 @@ ion-modal {
     gap: 20px;
 
     ion-spinner {
-        width: 60px;
-        height: 60px;
+        width: 52px;
+        height: 52px;
         --color: #{$moot-primary};
     }
 
     p {
-        font-size: 16px;
+        font-size: 15px;
         color: rgba($moot-primary, 0.65);
         margin: 0;
     }
@@ -711,21 +886,21 @@ ion-modal {
 // OTP Success
 .otp-success-container {
     background: $moot-light;
-    min-height: 60vh;
+    padding: 48px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 
     .success-icon {
-        font-size: 80px;
+        font-size: 72px;
         color: $moot-green;
     }
 
     h2 {
-        font-size: 24px;
-        font-weight: 600;
+        font-size: 22px;
+        font-weight: 700;
         color: $moot-primary;
         margin: 0;
     }
@@ -747,7 +922,7 @@ ion-modal {
     font-weight: 600;
     text-align: center;
     border: 2px solid rgba($moot-primary, 0.15);
-    border-radius: 10px;
+    border-radius: 999px;
     background: rgba($moot-primary, 0.06);
     color: $moot-primary;
     transition: all 0.3s ease;
@@ -775,7 +950,7 @@ ion-modal {
 
 // General other-form container
 .other-form {
-    min-height: 50vh;
+    overflow: hidden;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

@@ -14,6 +14,7 @@
 
 import { NgModule } from '@angular/core';
 
+import { AddonMoodleMootModule } from './moodlemoot/moodlemoot.module';
 import { AddonBadgesModule } from './badges/badges.module';
 import { AddonBlockModule } from './block/block.module';
 import { AddonBlogModule } from './blog/blog.module';
@@ -37,6 +38,7 @@ import { AddonUserProfileFieldModule } from './userprofilefield/userprofilefield
 
 @NgModule({
     imports: [
+        AddonMoodleMootModule,
         AddonBadgesModule,
         AddonBlockModule,
         AddonBlogModule,

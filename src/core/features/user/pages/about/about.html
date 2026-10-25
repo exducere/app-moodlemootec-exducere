@@ -58,38 +58,6 @@
                 </section>
             }
 
-            <!-- Contact info -->
-            @if (user.email || user.city) {
-                <section class="moot-profile-card">
-                    <h3 class="moot-profile-section-title">{{ 'core.user.contact' | translate }}</h3>
-                    <ul class="moot-profile-list">
-                        @if (user.email) {
-                            <li class="moot-profile-row">
-                                <span class="moot-profile-row-icon">
-                                    <ion-icon name="due-circle-envelope-duotone" aria-hidden="true" />
-                                </span>
-                                <div class="moot-profile-row-body">
-                                    <span class="moot-profile-row-label">{{ 'core.user.email' | translate }}</span>
-                                    <a class="moot-profile-row-value" href="mailto:{{user.email}}" core-link
-                                        [autoLogin]="false" [showBrowserWarning]="false">{{ user.email }}</a>
-                                </div>
-                            </li>
-                        }
-                        @if (user.city) {
-                            <li class="moot-profile-row">
-                                <span class="moot-profile-row-icon">
-                                    <ion-icon name="due-location-dot-duotone" aria-hidden="true" />
-                                </span>
-                                <div class="moot-profile-row-body">
-                                    <span class="moot-profile-row-label">{{ 'core.user.city' | translate }}</span>
-                                    <span class="moot-profile-row-value">{{ user.city }}</span>
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                </section>
-            }
-
             <!-- Enrolled workshops (only for current user) -->
             @if (isCurrentUser) {
                 <section class="moot-profile-workshops">
@@ -280,3 +248,5 @@
         </ng-template>
     </ion-modal>
 </ion-content>
+
+

@@ -33,6 +33,10 @@ export interface AddonMoodleMootTaller {
     moot_room: string;
     // eslint-disable-next-line @typescript-eslint/naming-convention
     moot_capacity: number;       // 0 = unlimited
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    moot_level: string;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    moot_audience: string;
     currentenrolled: number;
     isfull: boolean;
     isenrolled: boolean;
@@ -40,7 +44,6 @@ export interface AddonMoodleMootTaller {
     requireskey: boolean;
     teachers: AddonMoodleMootTeacher[];
 }
-
 export interface AddonMoodleMootEnrolResult {
     status: boolean;
     courseid: number;
@@ -48,11 +51,54 @@ export interface AddonMoodleMootEnrolResult {
     capacity: number;
 }
 
-const WS_GET_AGENDA = 'local_moodlemoot_get_agenda';
-const WS_GET_TALLER = 'local_moodlemoot_get_taller';
-const WS_ENROL_TALLER = 'local_moodlemoot_enrol_taller';
+export interface AddonMoodleMootUnenrolResult {
+    status: boolean;
+    courseid: number;
+}
+
+export interface AddonMootecQRUser {
+    id: number;
+    fullname: string;
+    email: string;
+    city: string;
+    country: string;
+    profileimageurl: string;
+}
+
+export interface AddonMootecUserStatus {
+    ui: string;
+    is_assigned: boolean;
+    user?: AddonMootecQRUser;
+    events: { id: number; name: string; status: number }[];
+}
+
+export interface AddonMoodleMootSponsor {
+    id: number;
+    name: string;
+    category: string;
+    code: string;
+    imageurl: string;
+    sortorder: number;
+    isvisited: boolean;
+}
+
+export interface AddonMoodleMootSponsorVisitResult {
+    status: boolean;
+    alreadyvisited: boolean;
+    sponsorid: number;
+    sponsorname: string;
+}
+
+const WS_GET_AGENDA = 'local_moodlemootecuador_get_agenda';
+const WS_GET_TALLER = 'local_moodlemootecuador_get_taller';
+const WS_ENROL_TALLER = 'local_moodlemootecuador_enrol_taller';
+const WS_UNENROL_TALLER = 'local_moodlemootecuador_unenrol_taller';
+const WS_GET_USER_STATUS = 'local_moodlemootecuador_get_user_status';
+const WS_GET_SPONSORS = 'local_moodlemootecuador_get_sponsors';
+const WS_REGISTER_SPONSOR_VISIT = 'local_moodlemootecuador_register_sponsor_visit';
 
 const CACHE_KEY_AGENDA = 'local_moodlemoot:agenda';
+const CACHE_KEY_SPONSORS = 'local_moodlemoot:sponsors';
 const CACHE_KEY_TALLER_PREFIX = 'local_moodlemoot:taller:';
 
 @Injectable({ providedIn: 'root' })
@@ -97,6 +143,64 @@ export class AddonMoodleMootProvider {
         const site = await CoreSites.getRequiredCurrentSite();
 
         return site.write<AddonMoodleMootEnrolResult>(WS_ENROL_TALLER, { courseid });
+    }
+
+    /**
+     * Self-unenrol current user from a taller.
+     */
+    async unenrolTaller(courseid: number): Promise<AddonMoodleMootUnenrolResult> {
+        const site = await CoreSites.getRequiredCurrentSite();
+
+        return site.write<AddonMoodleMootUnenrolResult>(WS_UNENROL_TALLER, { courseid });
+    }
+
+    /**
+     * Resolve a mootec QR token (the `ui` param from the QR URL) to user data.
+     * Calls local_mootec_get_user_status — no cache, always hits the network.
+     */
+    async getUserByToken(ui: string): Promise<AddonMootecUserStatus> {
+        const site = await CoreSites.getRequiredCurrentSite();
+
+        return site.read<AddonMootecUserStatus>(WS_GET_USER_STATUS, { ui });
+    }
+
+    /**
+     * List of sponsors with image URL and current-user visit status.
+     */
+    async getSponsors(forceNetwork = false): Promise<AddonMoodleMootSponsor[]> {
+        const site = await CoreSites.getCurrentSite();
+        if (!site) {
+            return [];
+        }
+
+        const preSets: CoreSiteWSPreSets = {
+            cacheKey: CACHE_KEY_SPONSORS,
+            updateFrequency: CoreCacheUpdateFrequency.OFTEN,
+            getFromCache: !forceNetwork,
+        };
+
+        return site.read<AddonMoodleMootSponsor[]>(WS_GET_SPONSORS, {}, preSets);
+    }
+
+    /**
+     * Register a sponsor visit via its QR code value (e.g. "sponsor001").
+     */
+    async registerSponsorVisit(code: string): Promise<AddonMoodleMootSponsorVisitResult> {
+        const site = await CoreSites.getRequiredCurrentSite();
+
+        return site.write<AddonMoodleMootSponsorVisitResult>(WS_REGISTER_SPONSOR_VISIT, { code });
+    }
+
+    /**
+     * Invalidate cached sponsors list.
+     */
+    async invalidateSponsors(): Promise<void> {
+        const site = await CoreSites.getCurrentSite();
+        if (!site) {
+            return;
+        }
+
+        await site.invalidateWsCacheForKey(CACHE_KEY_SPONSORS);
     }
 
     /**

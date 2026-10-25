@@ -466,11 +466,44 @@ ion-modal {
     }
 }
 
+.detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 14px;
+}
+
+.detail-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+
+    ion-icon { font-size: 12px; }
+
+    &--level {
+        background: rgba(25, 72, 102, 0.1);
+        color: #194866;
+    }
+
+    &--audience {
+        background: rgba(249, 128, 18, 0.12);
+        color: #c96100;
+    }
+}
+
 .detail-summary {
     font-size: 14px;
     line-height: 1.55;
     color: #374151;
     margin: 0 0 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 // ─── Teachers ─────────────────────────────────────────────────────────────────

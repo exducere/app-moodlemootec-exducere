@@ -1,0 +1,312 @@
+@use "theme/globals" as *;
+
+.moot-location-content {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 32px;
+}
+
+// ── Hero ─────────────────────────────────────────────────────────────────
+
+.moot-location-hero {
+    background: linear-gradient(150deg, #194866 0%, #0d2f42 100%);
+    padding: 36px 32px 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.moot-location-hero-logo {
+    width: 220px;
+    max-width: 70%;
+    height: auto;
+    display: block;
+}
+
+// ── Info card ────────────────────────────────────────────────────────────
+
+.moot-location-card {
+    margin: 16px 16px 0;
+    background: var(--ion-card-background, #fff);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.moot-location-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+}
+
+.moot-location-row-icon {
+    font-size: 22px;
+    color: var(--ion-color-primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.moot-location-row-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.moot-location-row-label {
+    margin: 0 0 2px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ion-color-medium);
+}
+
+.moot-location-row-value {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ion-text-color);
+}
+
+.moot-location-divider {
+    height: 1px;
+    background: var(--ion-border-color, rgba(0, 0, 0, 0.08));
+    margin: 0 16px;
+}
+
+// ── Section wrapper ───────────────────────────────────────────────────────
+
+.moot-location-section {
+    margin: 24px 16px 0;
+}
+
+.moot-location-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ion-text-color);
+
+    ion-icon {
+        font-size: 16px;
+        color: var(--ion-color-primary);
+    }
+}
+
+// ── Croquis card ──────────────────────────────────────────────────────────
+
+.moot-location-croquis-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background: var(--ion-card-background, #fff);
+}
+
+.moot-location-croquis-preview {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    height: 200px;
+    background: #f4f5f7;
+    display: flex;
+    align-items: center;
+}
+
+.moot-location-croquis-thumb {
+    height: 200px;
+    width: auto;
+    max-width: none;
+    display: block;
+    object-fit: contain;
+}
+
+.moot-location-croquis-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-top: 1px solid var(--ion-border-color, rgba(0, 0, 0, 0.07));
+    gap: 8px;
+}
+
+.moot-location-croquis-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ion-color-medium);
+
+    ion-icon { font-size: 13px; }
+}
+
+.moot-location-croquis-open-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1.5px solid var(--ion-color-primary);
+    background: transparent;
+    color: var(--ion-color-primary);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+
+    ion-icon { font-size: 13px; }
+}
+
+// ── Decorative map card ───────────────────────────────────────────────────
+
+.moot-location-map-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active { opacity: 0.85; }
+}
+
+.moot-location-map-bg {
+    position: relative;
+    height: 140px;
+    background: linear-gradient(135deg, #2a6a8a 0%, #194866 50%, #1a5c45 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.moot-map-grid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.moot-map-pin {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    ion-icon {
+        font-size: 48px;
+        color: #f98012;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+    }
+}
+
+.moot-location-map-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--ion-card-background, #fff);
+    border-top: 1px solid var(--ion-border-color, rgba(0, 0, 0, 0.06));
+}
+
+.moot-location-map-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.moot-location-map-name {
+    margin: 0 0 2px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ion-text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.moot-location-map-addr {
+    margin: 0;
+    font-size: 11px;
+    color: var(--ion-color-medium);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.moot-location-map-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+    color: var(--ion-color-primary);
+
+    ion-icon { font-size: 22px; }
+
+    span {
+        font-size: 10px;
+        font-weight: 600;
+        text-align: center;
+        line-height: 1.2;
+    }
+}
+
+// ── Fullscreen croquis overlay ───────────────────────────────────────────
+
+.moot-croquis-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.94);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.moot-croquis-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+
+    ion-icon {
+        font-size: 20px;
+        color: #fff;
+    }
+}
+
+.moot-croquis-scroll {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-overflow-scrolling: touch;
+    padding: 60px 8px 36px;
+}
+
+.moot-croquis-full-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    touch-action: pinch-zoom;
+}
+
+.moot-croquis-dismiss-hint {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 11px;
+    margin: 0;
+    padding: 0 0 12px;
+}

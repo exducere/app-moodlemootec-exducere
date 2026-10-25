@@ -44,7 +44,7 @@ import { CoreFileUtils } from '@singletons/file-utils';
 import { CoreQRScan } from '@services/qrscan';
 import { CoreToasts } from '@services/overlays/toasts';
 import { CoreCourseHelper } from '@features/course/services/course-helper';
-import { AddonMoodleMoot, AddonMoodleMootTaller } from '@addons/moodlemoot/services/moodlemoot';
+import { AddonMoodleMoot, AddonMoodleMootTaller, AddonMootecQRUser } from '@addons/moodlemoot/services/moodlemoot';
 import QRCode from 'qrcode';
 
 /**
@@ -436,18 +436,33 @@ export default class CoreUserAboutPage implements OnInit, OnDestroy {
         }
 
         const params = CoreUrl.extractUrlParams(text);
-        const scannedId = params.id ? parseInt(params.id, 10) : NaN;
-
-        if (!scannedId) {
-            CoreAlerts.showError('El código escaneado no corresponde a un perfil de usuario válido.');
-
-            return;
-        }
-
         const loading = await CoreLoadings.show('core.loading', true);
 
         try {
-            this.scannedUser = await CoreUser.getProfile(scannedId);
+            if (params.ui) {
+                // Mootec QR: local/mootec/index.php?ui=<token> → resolve via WS
+                const status = await AddonMoodleMoot.getUserByToken(params.ui);
+
+                if (!status.is_assigned || !status.user) {
+                    CoreAlerts.showError('Este código QR aún no tiene un usuario asignado.');
+
+                    return;
+                }
+
+                this.scannedUser = this.mootecUserToProfile(status.user);
+            } else {
+                // Standard Moodle profile QR: ?id=<userid>
+                const scannedId = params.id ? parseInt(params.id, 10) : NaN;
+
+                if (!scannedId) {
+                    CoreAlerts.showError('El código escaneado no corresponde a un perfil de usuario válido.');
+
+                    return;
+                }
+
+                this.scannedUser = await CoreUser.getProfile(scannedId);
+            }
+
             this.requestSent = false;
             this.requestSending = false;
             this.showScannedUserModal = true;
@@ -456,6 +471,18 @@ export default class CoreUserAboutPage implements OnInit, OnDestroy {
         } finally {
             loading.dismiss();
         }
+    }
+
+    protected mootecUserToProfile(u: AddonMootecQRUser): CoreUserProfile {
+        return {
+            id: u.id,
+            fullname: u.fullname,
+            email: u.email,
+            city: u.city,
+            country: u.country,
+            profileimageurl: u.profileimageurl,
+            profileimageurlsmall: u.profileimageurl,
+        } as CoreUserProfile;
     }
 
     /**

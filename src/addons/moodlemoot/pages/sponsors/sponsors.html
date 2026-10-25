@@ -1,0 +1,63 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Sponsors</ion-title>
+        <core-user-menu-button slot="end" />
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="moot-sponsors-content">
+    <ion-refresher slot="fixed" [disabled]="!loaded" (ionRefresh)="refreshSponsors($event.target)">
+        <ion-refresher-content pullingText="{{ 'core.pulltorefresh' | translate }}" />
+    </ion-refresher>
+
+    <core-loading [hideUntil]="loaded" placeholderType="rowwrap" placeholderHeight="160px">
+
+        @if (!sponsors.length) {
+            <core-empty-box icon="fas-star" message="No hay sponsors registrados aún." />
+        } @else {
+            <ion-grid class="moot-sponsors-grid">
+                <ion-row>
+                    @for (sponsor of sponsors; track sponsor.id) {
+                        <ion-col size="6">
+                            <div class="moot-sponsor-card" [class.moot-sponsor-visited]="sponsor.isvisited">
+
+                                @if (sponsor.isvisited) {
+                                    <div class="moot-sponsor-check">
+                                        <ion-icon name="fas-circle-check" aria-hidden="true" />
+                                    </div>
+                                }
+
+                                <div class="moot-sponsor-img-wrapper">
+                                    @if (sponsor.imageurl) {
+                                        <img [url]="sponsor.imageurl" core-external-content
+                                            [alt]="sponsor.name" class="moot-sponsor-img" />
+                                    } @else {
+                                        <div class="moot-sponsor-img-placeholder">
+                                            <ion-icon name="fas-building" aria-hidden="true" />
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="moot-sponsor-info">
+                                    <p class="moot-sponsor-name">{{ sponsor.name }}</p>
+                                    @if (sponsor.category) {
+                                        <span class="moot-sponsor-category">{{ sponsor.category }}</span>
+                                    }
+                                </div>
+
+                            </div>
+                        </ion-col>
+                    }
+                </ion-row>
+            </ion-grid>
+        }
+
+    </core-loading>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="scanSponsorQR()" [disabled]="scanning" aria-label="Escanear QR de sponsor">
+            <ion-icon name="due-qrcode-white" />
+        </ion-fab-button>
+    </ion-fab>
+
+</ion-content>

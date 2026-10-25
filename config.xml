@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="51000" id="com.moodlemootec.exducere" ios-CFBundleVersion="5.1.0.0" version="5.1.0" versionCode="51000" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>MoodleMootEcuador2026</name>
+<widget android-versionCode="523001" id="com.moodlemootec.exducere" ios-CFBundleVersion="5.2.3" version="5.2.3" versionCode="52301" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>MoodleMootEcuador</name>
     <description>Exducere Online</description>
     <author email="soporte@exducereonline.com" href="https://exducereonline.com/">Developer Team Exducere</author>
     <content src="index.html" />
@@ -28,7 +28,7 @@
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="prerendered-icon" value="true" />
-    <preference name="AppendUserAgent" value="MoodleMobile 5.1.0 (51000)" />
+    <preference name="AppendUserAgent" value="MoodleMobile 5.2.2 (520)" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="ScrollEnabled" value="true" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
@@ -116,7 +116,7 @@
             <true />
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="CFBundleShortVersionString">
-            <string>5.1.0</string>
+            <string>5.2.3</string>
         </edit-config>
         <edit-config file="*-Info.plist" mode="overwrite" target="CFBundleLocalizations">
             <array>

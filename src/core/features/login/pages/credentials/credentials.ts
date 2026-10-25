@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit, OnDestroy, ElementRef, inject, viewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 
 import { CoreSSO } from '@singletons/sso';
 import { CoreNetwork } from '@services/network';
@@ -26,12 +24,10 @@ import { Translate } from '@singletons';
 import { CoreSitePublicConfigResponse, CoreUnauthenticatedSite } from '@classes/sites/unauthenticated-site';
 import { CoreEventObserver, CoreEvents } from '@singletons/events';
 import { CoreNavigator } from '@services/navigator';
-import { CoreForms } from '@singletons/form';
 import { CoreUserSupport } from '@features/user/services/support';
 import { CoreUserSupportConfig } from '@features/user/classes/support/support-config';
 import { CoreUserGuestSupportConfig } from '@features/user/classes/support/guest-support-config';
 import { SafeHtml } from '@angular/platform-browser';
-import { CorePlatform } from '@services/platform';
 import { CoreSitesFactory } from '@services/sites-factory';
 import {
     ALWAYS_SHOW_LOGIN_FORM_CHANGED,
@@ -40,12 +36,9 @@ import {
 } from '@features/login/constants';
 import { CoreCustomURLSchemes } from '@services/urlschemes';
 import { CoreSiteError } from '@classes/errors/siteerror';
-import { CoreKeyboard } from '@singletons/keyboard';
 import { CoreLoadings } from '@services/overlays/loadings';
 import { CoreAlerts } from '@services/overlays/alerts';
 import { CoreLoginMethodsComponent } from '../../components/login-methods/login-methods';
-import { CoreLoginExceededAttemptsComponent } from '../../components/exceeded-attempts/exceeded-attempts';
-import { CoreSiteLogoComponent } from '../../../../components/site-logo/site-logo';
 import { CoreSharedModule } from '@/core/shared.module';
 import { CoreBiometricAuthService } from '@features/login/services/biometric-auth';
 
@@ -62,8 +55,6 @@ import { CoreBiometricAuthService } from '@features/login/services/biometric-aut
     ],
 })
 export default class CoreLoginCredentialsPage implements OnInit, OnDestroy {
-
-    readonly formElement = viewChild<ElementRef<HTMLFormElement>>('credentialsForm');
 
     credForm!: FormGroup;
     site!: CoreUnauthenticatedSite;
@@ -89,12 +80,18 @@ export default class CoreLoginCredentialsPage implements OnInit, OnDestroy {
     otpCode = ['', '', '', '', '', ''];
     otpSessionId = '';
 
+    // Cédula flow states
+    cedulaValue = '';
+    cedulaLoading = false;
+
+    // Password form state
+    showPasswordForm = false;
+
     protected siteCheck?: CoreSiteCheckResponse;
     protected eventThrown = false;
     protected viewLeft = false;
     protected siteId?: string;
     protected urlToOpen?: string;
-    protected valueChangeSubscription?: Subscription;
     protected alwaysShowLoginFormObserver?: CoreEventObserver;
     protected loginObserver?: CoreEventObserver;
     protected fb = inject(FormBuilder);
@@ -141,29 +138,6 @@ export default class CoreLoginCredentialsPage implements OnInit, OnDestroy {
             if (!launchedWithTokenURL) {
                 this.openBrowserSSO();
             }
-        }
-
-        if (CorePlatform.isIOS() && !this.isBrowserSSO) {
-            // Make iOS auto-fill work. The field that isn't focused doesn't get updated, do it manually.
-            // Debounce it to prevent triggering this function too often when the user is typing.
-            this.valueChangeSubscription = this.credForm.valueChanges.pipe(debounceTime(1000)).subscribe((changes) => {
-                const formElement = this.formElement();
-                if (!formElement || !formElement.nativeElement) {
-                    return;
-                }
-
-                const usernameInput = formElement.nativeElement.querySelector<HTMLInputElement>('input[name="username"]');
-                const passwordInput = formElement.nativeElement.querySelector<HTMLInputElement>('input[name="password"]');
-                const usernameValue = usernameInput?.value;
-                const passwordValue = passwordInput?.value;
-
-                if (usernameValue !== undefined && usernameValue !== changes.username) {
-                    this.credForm.get('username')?.setValue(usernameValue);
-                }
-                if (passwordValue !== undefined && passwordValue !== changes.password) {
-                    this.credForm.get('password')?.setValue(passwordValue);
-                }
-            });
         }
 
         this.alwaysShowLoginFormObserver = CoreEvents.on(ALWAYS_SHOW_LOGIN_FORM_CHANGED, async () => {
@@ -422,6 +396,53 @@ export default class CoreLoginCredentialsPage implements OnInit, OnDestroy {
     }
 
     /**
+     * Authenticates the user using only their cédula (username).
+     */
+    async loginByCedula(): Promise<void> {
+        const cedula = this.cedulaValue.trim();
+
+        if (!cedula) {
+            CoreAlerts.showError('Ingresa tu número de cédula.');
+            return;
+        }
+
+        if (!CoreNetwork.isOnline()) {
+            CoreAlerts.showError(Translate.instant('core.networkerrormsg'));
+            return;
+        }
+
+        this.cedulaLoading = true;
+        const modal = await CoreLoadings.show();
+
+        try {
+            const result = await CoreWS.callAjax<{
+                success: boolean;
+                token: string;
+                username: string;
+                fullname: string;
+                error: string;
+            }>('local_moodlemootecuador_login_by_cedula', { cedula }, {
+                siteUrl: this.site.getURL(),
+            });
+
+            if (!result.success) {
+                CoreAlerts.showError(result.error || 'Cédula no encontrada. Verifica tu número e inténtalo de nuevo.');
+                return;
+            }
+
+            await CoreSites.newSite(this.site.getURL(), result.token);
+
+            this.cedulaValue = '';
+            await CoreNavigator.navigateToSiteHome({ params: { urlToOpen: this.urlToOpen } });
+        } catch (error) {
+            CoreAlerts.showError('Error al verificar: ' + (error instanceof Error ? error.message : 'Error desconocido'));
+        } finally {
+            modal.dismiss();
+            this.cedulaLoading = false;
+        }
+    }
+
+    /**
      * Cancels OTP flow and returns to main login.
      */
     cancelOTPFlow(): void {
@@ -440,50 +461,45 @@ export default class CoreLoginCredentialsPage implements OnInit, OnDestroy {
      * @param e Event.
      * @returns Promise resolved when done.
      */
+    openPasswordForm(e?: Event): void {
+        e?.preventDefault();
+        this.showPasswordForm = true;
+    }
+
+    cancelPasswordForm(): void {
+        this.showPasswordForm = false;
+        this.credForm.controls['username'].reset();
+        this.credForm.controls['password'].reset();
+        this.loginAttempts = 0;
+    }
+
     async login(e?: Event): Promise<void> {
         e?.preventDefault();
         e?.stopPropagation();
 
-        CoreKeyboard.close();
-
-        // Get input data.
         const siteUrl = this.site.getURL();
         const username = this.credForm.value.username;
         const password = this.credForm.value.password;
 
         if (!username) {
             CoreAlerts.showError(Translate.instant('core.login.usernamerequired'));
-
             return;
         }
         if (!password) {
             CoreAlerts.showError(Translate.instant('core.login.passwordrequired'));
-
             return;
         }
-
         if (!CoreNetwork.isOnline()) {
             CoreAlerts.showError(Translate.instant('core.networkerrormsg'));
-
             return;
         }
 
         const modal = await CoreLoadings.show();
 
-        // Start the authentication process.
         try {
             const data = await CoreSites.getUserToken(siteUrl, username, password);
+            await CoreSites.newSite(data.siteUrl, data.token, data.privateToken);
 
-            const siteId = await CoreSites.newSite(data.siteUrl, data.token, data.privateToken);
-
-            // Offer biometric enrollment after first successful login
-            if (siteId) {
-                const site = await CoreSites.getSite(siteId);
-                const siteName = await site.getSiteName();
-                // await this.offerBiometricEnrollment(siteId, siteName);
-            }
-
-            // Reset fields so the data is not in the view anymore.
             this.credForm.controls['username'].reset();
             this.credForm.controls['password'].reset();
 
@@ -498,15 +514,12 @@ export default class CoreLoginCredentialsPage implements OnInit, OnDestroy {
             if (error.loggedout) {
                 CoreNavigator.navigate('/login/sites', { reset: true });
             } else if (error.errorcode == 'forcepasswordchangenotice') {
-                // Reset password field.
                 this.credForm.controls.password.reset();
             } else if (error.errorcode === 'invalidlogin') {
                 this.loginAttempts++;
             }
         } finally {
             modal.dismiss();
-
-            CoreForms.triggerFormSubmittedEvent(this.formElement(), true);
         }
     }
 
@@ -574,7 +587,6 @@ export default class CoreLoginCredentialsPage implements OnInit, OnDestroy {
             },
             this.siteId,
         );
-        this.valueChangeSubscription?.unsubscribe();
         this.alwaysShowLoginFormObserver?.off();
         this.loginObserver?.off();
     }

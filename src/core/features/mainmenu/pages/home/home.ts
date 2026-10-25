@@ -53,6 +53,8 @@ interface AgendaWorkshop {
     canselfenrol: boolean;
     requireskey: boolean;
     teachers: AddonMoodleMootTeacher[];
+    level: string;
+    audience: string;
 }
 
 interface AgendaCalendarItem {
@@ -119,6 +121,7 @@ export default class CoreMainMenuHomePage implements OnInit {
     selectedWorkshop?: AgendaWorkshop;
     showDetailModal = false;
     enrolling = false;
+    unenrollingWorkshop = false;
 
     protected subscription?: Subscription;
     protected updateSiteObserver?: CoreEventObserver;
@@ -224,6 +227,8 @@ export default class CoreMainMenuHomePage implements OnInit {
             canselfenrol: taller.canselfenrol,
             requireskey: taller.requireskey,
             teachers: taller.teachers ?? [],
+            level: taller.moot_level || '',
+            audience: taller.moot_audience || '',
         };
     }
 
@@ -450,6 +455,7 @@ export default class CoreMainMenuHomePage implements OnInit {
 
         this.selectedDate = this.clampToEventRange(this.shiftDay(this.selectedDate, -1));
         await this.ensureCalendarEventsLoaded(this.selectedDate);
+        this.scheduleScrollToCurrentHour();
     }
 
     async goNext(): Promise<void> {
@@ -459,6 +465,7 @@ export default class CoreMainMenuHomePage implements OnInit {
 
         this.selectedDate = this.clampToEventRange(this.shiftDay(this.selectedDate, 1));
         await this.ensureCalendarEventsLoaded(this.selectedDate);
+        this.scheduleScrollToCurrentHour();
     }
 
     /**
@@ -498,7 +505,7 @@ export default class CoreMainMenuHomePage implements OnInit {
      * Only runs when the selected day is today.
      */
     protected scheduleScrollToCurrentHour(): void {
-        if (!this.isToday() || this.viewMode !== 'timeline') {
+        if (this.viewMode !== 'timeline') {
             return;
         }
 
@@ -638,6 +645,52 @@ export default class CoreMainMenuHomePage implements OnInit {
             }
         } finally {
             this.enrolling = false;
+            loading.dismiss();
+        }
+    }
+
+    async unenrolFromWorkshop(): Promise<void> {
+        const w = this.selectedWorkshop;
+        if (!w || !w.enrolled || this.unenrollingWorkshop) {
+            return;
+        }
+
+        try {
+            await CoreAlerts.confirm(
+                '¿Estás seguro de que deseas desmatricularte de este taller?',
+                { header: 'Desmatricularse', isDestructive: true },
+            );
+        } catch {
+            return;
+        }
+
+        const loading = await CoreLoadings.show('core.loading', true);
+        this.unenrollingWorkshop = true;
+        try {
+            await AddonMoodleMoot.unenrolTaller(w.id);
+
+            w.enrolled = false;
+            await AddonMoodleMoot.invalidateAgenda();
+            await AddonMoodleMoot.invalidateTaller(w.id);
+
+            this.closeWorkshop();
+            CoreAlerts.show({ message: 'Te desmatriculaste correctamente del taller.' });
+        } catch (error) {
+            const code = (error as { errorcode?: string } | undefined)?.errorcode;
+            const messages: Record<string, string> = {
+                'error:nounenrol':      'Este taller no permite desmatricularse. Contacta al organizador.',
+                'error:notenrolled':    'No estás matriculado en este taller.',
+                'error:tallernotfound': 'No se encontró el taller.',
+            };
+            const friendly = code && messages[code] ? messages[code] : undefined;
+
+            if (friendly) {
+                CoreAlerts.show({ message: friendly });
+            } else {
+                CoreAlerts.showError(error);
+            }
+        } finally {
+            this.unenrollingWorkshop = false;
             loading.dismiss();
         }
     }

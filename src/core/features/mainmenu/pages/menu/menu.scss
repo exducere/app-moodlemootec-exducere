@@ -45,14 +45,9 @@ ion-tab-bar {
     --color: var(--core-bottom-tabs-color);
     --color-selected: var(--core-bottom-tabs-color-selected);
     --background-selected: var(--core-bottom-tabs-background-selected);
+    --ion-safe-area-bottom: 0px;
 
-    // MÉTRICA UX: Altura mínima basada en estándar (56px aprox) + área segura de Android
-    min-height: var(--menutabbar-size);
-    height: auto;
-    padding-bottom: var(--ion-safe-area-bottom, 0px);
-    display: flex;
-    align-items: center;
-    border-top: 1px solid rgba(0,0,0,0.1); // Separación sutil
+    height: var(--menutabbar-size);
 }
 
 core-user-menu-button {
@@ -64,11 +59,6 @@ core-user-menu-button {
 // Estilo de los botones individuales
 ion-tab-button {
     color: var(--color);
-    --padding-top: 0;
-    --padding-bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 
     &.tab-selected {
         color: var(--color-selected);
@@ -93,7 +83,6 @@ ion-tab-button {
         --color: var(--core-bottom-tabs-badge-text-color);
     }
 
-    // Badge tipo punto (si aplica)
     ion-icon.core-tab-badge {
         color: var(--core-bottom-tabs-badge-color);
         padding: 3px 6px 2px;
@@ -128,16 +117,15 @@ ion-tabs {
 
         ion-tab-button {
             border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
 
             &.tab-selected {
                 border-top-color: var(--core-bottom-tabs-border-color-active);
             }
 
             ion-icon.core-tab-icon {
-                // Forzamos que el icono no se mueva por los mensajes de red
-                margin-bottom: 0 !important;
-                margin-top: 4px;
-                transition: transform 300ms ease-in-out;
+                margin-bottom: var(--network-margin-bottom);
+                transition: margin 500ms ease-in-out, transform 300ms ease-in-out;
             }
 
             ion-icon.core-tab-badge,
@@ -146,18 +134,17 @@ ion-tabs {
             }
         }
 
-        // Control de visibilidad del menú
         @if ($core-always-show-main-menu) {
             ion-tab-bar {
+                height: var(--menutabbar-size) !important;
                 visibility: visible !important;
                 transform: translateY(0) !important;
             }
         } @else {
-            &.tabshidden ion-tab-bar {
+            &.tabshidden > ion-tab-bar {
                 pointer-events: none;
                 height: 0px;
                 border: 0px;
-                visibility: hidden;
             }
         }
     }
@@ -203,6 +190,14 @@ ion-tabs {
                 }
             }
         }
+    }
+}
+
+// Altura extra en Android para evitar solapamiento con botones táctiles del sistema
+:host-context(.plt-android) {
+    ion-tab-bar {
+        height: calc(var(--menutabbar-size) + 15px);
+        padding-bottom: 15px;
     }
 }
 

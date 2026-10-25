@@ -151,6 +151,24 @@
                             }
                         </div>
 
+                        <!-- Level / Audience tags -->
+                        @if (w.level || w.audience) {
+                            <div class="detail-tags">
+                                @if (w.level) {
+                                    <span class="detail-tag detail-tag--level">
+                                        <ion-icon name="fas-signal" aria-hidden="true" />
+                                        {{ w.level }}
+                                    </span>
+                                }
+                                @if (w.audience) {
+                                    <span class="detail-tag detail-tag--audience">
+                                        <ion-icon name="fas-users" aria-hidden="true" />
+                                        {{ w.audience }}
+                                    </span>
+                                }
+                            </div>
+                        }
+
                         @if (w.summary) {
                             <p class="detail-summary" [innerHTML]="w.summary"></p>
                         }
@@ -190,9 +208,11 @@
 
                     <div class="detail-footer">
                         @if (w.enrolled) {
-                            <ion-button expand="block" fill="outline" class="detail-action enrolled">
-                                <ion-icon slot="start" name="fas-circle-check" aria-hidden="true" />
-                                Ya estás matriculado
+                            <ion-button expand="block" fill="outline" color="danger" class="detail-action"
+                                [disabled]="unenrollingWorkshop"
+                                (click)="unenrolFromWorkshop()">
+                                <ion-icon slot="start" name="fas-circle-xmark" aria-hidden="true" />
+                                Desmatricularme
                             </ion-button>
                         } @else if (w.isfull) {
                             <ion-button expand="block" class="detail-action" [disabled]="true">
